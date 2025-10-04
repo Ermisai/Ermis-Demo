@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8">
+    <title>YourTTS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" type="image/x-icon" href="favicons/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <style>
+      :root {
+        --tab-bg: #0f172a; /* slate-900 */
+        --tab-muted: #1e293b; /* slate-800 */
+        --tab-accent: #22d3ee; /* cyan-400 */
+        --tab-text: #e2e8f0; /* slate-200 */
+        --bd: #243041; /* border */
+      }
+      body { font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+
+      /* --- Tabs --- */
+      .tabs { margin: 24px auto 0; max-width: 980px; background: var(--tab-bg); border: 1px solid var(--bd); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+      .tab-header { display: flex; flex-wrap: wrap; background: linear-gradient(180deg,var(--tab-muted),var(--tab-bg)); }
+      .tab-btn { appearance: none; background: transparent; color: var(--tab-text); padding: 14px 18px; font-weight: 700; border: 0; cursor: pointer; position: relative; }
+      .tab-btn[aria-selected="true"] { color: white; }
+      .tab-btn[aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; background: var(--tab-accent); border-radius: 3px 3px 0 0; }
+      .tab-panel { display: none; padding: 22px; background: #0a0f1c; color: var(--tab-text); }
+      .tab-panel.active { display: block; }
+
+      /* Audio grid */
+      .audio-folder { margin: 8px 0 0; border-top: 1px solid var(--bd); }
+      .audio-folder summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; color: #fff; }
+      .audio-folder summary::-webkit-details-marker { display: none; }
+      .audio-folder summary span { opacity: .9; font-weight: 600; font-size: .95rem; color: var(--tab-text); }
+      .audio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 0 18px 18px; }
+      .audio-card { background: #0c1424; border: 1px solid var(--bd); border-radius: 10px; padding: 10px; }
+      .audio-card .fn { display: block; font-size: .85rem; opacity: .85; margin-bottom: 6px; word-break: break-all; }
+      .audio-card audio { width: 100%; }
+
+      /* Emoção: layout em 2 colunas (Voz | Emoção) */
+      .emotion-controls { display:flex; align-items:center; gap:10px; padding: 0 0 16px 0; }
+      .emotion-select { background:#0c1424; color:var(--tab-text); border:1px solid var(--bd); border-radius:8px; padding:8px 10px; }
+      .emotion-matrix { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 12px; align-items: start; }
+      .emotion-row { display: contents; }
+      .col-voice { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:12px 14px; color:#fff; font-weight:700; }
+      .col-emotion { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:10px; }
+      .col-head { background:#13233b; border:1px solid var(--bd); border-radius:10px; padding:10px 14px; font-weight:800; color:#c7d2fe; }
+      .emotion-group { border:1px solid var(--bd); border-radius:10px; margin:8px 0; padding:10px; }
+      .emotion-group h4 { margin:0 0 8px 0; color:#fff; }
+      .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+      .placeholder { opacity:.5; text-align:center; padding:12px; }
+      .emotion-row { display: contents; }
+      .col-voice { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:12px 14px; color:#fff; font-weight:700; }
+      .col-emotion { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:10px; }
+      .emotion-group { border:1px solid var(--bd); border-radius:10px; margin:8px 0; padding:10px; }
+      .emotion-group h4 { margin:0 0 8px 0; color:#fff; }
+      .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+
+      /* Header small fixes so it still looks ok */
+      #page-header { position: relative; min-height: 220px; color: white; overflow: hidden; }
+      #bg-header { position: absolute; inset: 0; background: radial-gradient(1200px 600px at 20% -10%, rgba(34,211,238,.25), transparent), radial-gradient(1000px 600px at 80% 0%, rgba(99,102,241,.25), transparent), linear-gradient(180deg, #0b1022 0%, #04070f 100%); }
+      #demo-canvas { position: absolute; inset: 0; }
+      .main-title { position: relative; z-index: 2; display: grid; place-items: center; padding: 56px 16px; text-align: center; }
+      .project-name a { color: white; text-decoration: none; }
+      .project-tagline { color: #c7d2fe; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <section id="page-header" class="page-header">
+      <div id="bg-header"></div>
+      <canvas id="demo-canvas"></canvas>
+      <div class="main-title">
+        <h1 class="project-name"><span><a href="index.html">YourTTS</a></span></h1>
+        <h2 class="project-tagline">Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone</h2>
+      </div>
+    </section>
+
+    <section class="main-content">
+      <center>
+        <a href="https://github.com/Edresson/YourTTS/" class="btn2">• GitHub •</a>
+        <a href="https://arxiv.org/abs/2112.02418" class="btn2">• Paper on arXiv •</a>
+        <a href="https://github.com/Edresson/YourTTS/#colab-demos" class="btn2">• Colab demos •</a>
+      </center>
+
+      <br><br>
+      <div style="text-align: center;">
+        <h2>YourTTS: Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone</h2>
+        <p><b>Edresson Casanova, Julian Weber, Christopher Shulby, Arnaldo Candido Junior, Eren Gölge and Moacir Antonelli Ponti</b></p>
+      </div>
+
+      <h3>Abstract:</h3>
+      <p>
+        YourTTS brings the power of a multilingual approach to the task of zero-shot multi-speaker TTS. Our method builds upon the VITS model and adds several novel modifications for zero-shot multi-speaker and multilingual training... (texto original mantido acima no seu arquivo)
+      </p>
+
+      <h3>System architecture:</h3>
+      <center><p><img src="resources/yourtts.png" width="560" alt="YourTTS architecture"></p></center>
+
+      <h2>Amostras Spark-TTS</h2>
+
+      <!-- Abas simples com apenas texto -->
+      <div class="tabs" role="tablist" aria-label="Amostras organizadas">
+        <div class="tab-header">
+          <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-voz" id="tab-voz">Por voz</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-emocao" id="tab-emocao">Por emoção</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por modelo</button>
+        </div>
+        <div class="tab-panel active" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
+          <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
+
+          <details class="audio-folder" open>
+            <summary>female-alc-dub <span>— Impact & Sad</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/female-alc-dub/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14},{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
+          </details>
+
+          <details class="audio-folder">
+            <summary>female-alc-dub-2 <span>— Impact & Sad</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/female-alc-dub-2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14},{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
+          </details>
+
+          <details class="audio-folder">
+            <summary>male-alc-dub <span>— Mid-Long</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":19}]'></div>
+          </details>
+
+          <details class="audio-folder">
+            <summary>male-alc-dub-2 <span>— Mid-Long</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":24}]'></div>
+          </details>
+
+          <details class="audio-folder">
+            <summary>male-alc-dub-2_2 <span>— Impact</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2_2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14}]'></div>
+          </details>
+
+          <details class="audio-folder">
+            <summary>male-alc-dub-2_3 <span>— Sad</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2_3/output" data-groups='[{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
+          </details>
+        </div>
+        <div class="tab-panel" id="painel-emocao" role="tabpanel" aria-labelledby="tab-emocao">
+          <div class="emotion-controls">
+            <label for="sel-pasta">Escolher pasta:</label>
+            <select id="sel-pasta" class="emotion-select">
+              <option value="ALL">Todas</option>
+              <option value="female-alc-dub">female-alc-dub</option>
+              <option value="female-alc-dub-2">female-alc-dub-2</option>
+              <option value="male-alc-dub">male-alc-dub</option>
+              <option value="male-alc-dub-2">male-alc-dub-2</option>
+              <option value="male-alc-dub-2_2">male-alc-dub-2_2</option>
+              <option value="male-alc-dub-2_3">male-alc-dub-2_3</option>
+            </select>
+          </div>
+          <div id="emotion-matrix" class="emotion-matrix" aria-live="polite"></div>
+        </div>
+        <div class="tab-panel" id="painel-modelo" role="tabpanel" aria-labelledby="tab-modelo">
+          <p>Conteúdo "Por modelo": liste as pastas/modelos disponíveis (ex.: <code>female-alc-dub</code>, <code>male-alc-dub-2</code>) e o que diferencia cada um.</p>
+        </div>
+      </div>
+
+      <h3>Citation</h3>
+      <pre class="highlight">
+@ARTICLE{2021arXiv211202418C,
+  author = {{Casanova}, Edresson and {Weber}, Julian and {Shulby}, Christopher and {Junior}, Arnaldo Candido and {G{\"o}lge}, Eren and {Antonelli Ponti}, Moacir},
+  title = "{YourTTS: Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone}",
+  journal = {arXiv e-prints},
+  keywords = {Computer Science - Sound, Computer Science - Computation and Language, Electrical Engineering and Systems Science - Audio and Speech Processing},
+  year = 2021,
+  month = dec,
+  eid = {arXiv:2112.02418},
+  pages = {arXiv:2112.02418},
+  archivePrefix = {arXiv},
+  eprint = {2112.02418},
+  primaryClass = {cs.SD},
+  adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv211202418C},
+  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
+}
+      </pre>
+
+      <footer class="site-footer">
+        <a href="https://coqui.ai/" title="Coqui AI" target="_blank"><img src="img/coqui.png" border="0" height="40" alt="Coqui AI"></a>
+        <a href="http://www.defined.ai/" title="Defined.ai" target="_blank"><img src="img/df.jpeg" border="0" height="50" alt="Defined.ai"></a>
+        <a href="http://www.deeplearningbrasil.com.br/" title="Deep Learning Brasil" target="_blank"><img src="img/dlb.png" border="0" height="50" alt="Deep Learning Brasil"></a>
+        <a href="http://icmc.usp.br/" title="Institute of Mathematics and Computer Science (ICMC)" target="_blank"><img src="img/icmc.png" border="0" height="55" alt="ICMC"></a>
+        <a href="https://www.soprabanking.com/" title="Sopra Banking Software" target="_blank"><img src="img/sbs.png" border="0" height="38" alt="Sopra Banking Software"></a>
+        <div class="cleaner"></div>
+      </footer>
+    </section>
+
+    <script>
+      // Tabs simples
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabPanels = document.querySelectorAll('.tab-panel');
+      tabButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          tabButtons.forEach((b) => b.setAttribute('aria-selected', 'false'));
+          btn.setAttribute('aria-selected', 'true');
+          tabPanels.forEach((p) => p.classList.remove('active'));
+          document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+        });
+      });
+    </script>
+
+    <script>
+      // Constrói os cartões de áudio a partir dos atributos data-* em cada .audio-grid
+      function buildAudioGrids() {
+        const grids = document.querySelectorAll('.audio-grid');
+        grids.forEach(grid => {
+          const base = grid.getAttribute('data-base');
+          /** @type {{label:string,prefix:string,start:number,end:number}[]} */
+          const groups = JSON.parse(grid.getAttribute('data-groups') || '[]');
+          groups.forEach(group => {
+            for (let i = group.start; i <= group.end; i++) {
+              const filename = `${group.prefix}${i}.wav`;
+              const card = document.createElement('div');
+              card.className = 'audio-card';
+              const label = document.createElement('span');
+              label.className = 'fn';
+              label.textContent = `${filename}`;
+              const audio = document.createElement('audio');
+              audio.controls = true;
+              audio.src = `${base}/${filename}`;
+              audio.preload = 'none';
+              card.appendChild(label);
+              card.appendChild(audio);
+              grid.appendChild(card);
+            }
+          });
+        });
+      }
+      // Inicializa quando a aba "Por voz" estiver ativa pela primeira vez
+      const painelVoz = document.getElementById('painel-voz');
+      let audiosBuilt = false;
+      const ensureBuild = () => { if (!audiosBuilt) { buildAudioGrids(); audiosBuilt = true; } };
+      // Se já estiver ativa no load, constrói
+      if (painelVoz.classList.contains('active')) ensureBuild();
+      // Reconstrói ao clicar na aba "Por voz"
+      document.getElementById('tab-voz').addEventListener('click', ensureBuild);
+    </script>
+
+    <script>
+      // --- POR EMOÇÃO ---
+      const EMOTION_CONFIG = {
+        baseRoot: 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz',
+        folders: {
+          'female-alc-dub': [
+            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 },
+            { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 14 }
+          ],
+          'female-alc-dub-2': [
+            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 },
+            { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 14 }
+          ],
+          'male-alc-dub': [
+            { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 19 }
+          ],
+          'male-alc-dub-2': [
+            { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 24 }
+          ],
+          'male-alc-dub-2_2': [
+            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 }
+          ],
+          'male-alc-dub-2_3': [
+            { label: 'Sad', prefix: 'pt_sad_', start: 0, end: 14 }
+          ]
+        }
+      };
+
+      function buildEmotionMatrix(selection = 'ALL') {
+        const container = document.getElementById('emotion-matrix');
+        container.innerHTML = '';
+
+        // Cabeçalho: Voz | Emoção 1 | Emoção 2
+        const headVoice = document.createElement('div');
+        headVoice.className = 'col-voice col-head';
+        headVoice.textContent = 'Voz';
+        const headE1 = document.createElement('div');
+        headE1.className = 'col-emotion col-head';
+        headE1.textContent = 'Emoção 1';
+        const headE2 = document.createElement('div');
+        headE2.className = 'col-emotion col-head';
+        headE2.textContent = 'Emoção 2';
+        container.appendChild(headVoice);
+        container.appendChild(headE1);
+        container.appendChild(headE2);
+
+        const folders = Object.keys(EMOTION_CONFIG.folders);
+        const chosen = selection === 'ALL' ? folders : [selection];
+
+        chosen.forEach(folder => {
+          const groups = EMOTION_CONFIG.folders[folder] || [];
+
+          // Coluna 1: Voz
+          const voiceCell = document.createElement('div');
+          voiceCell.className = 'col-voice';
+          voiceCell.textContent = folder;
+
+          // Colunas 2 e 3: Emoções (até 2 por linha)
+          const em1 = document.createElement('div');
+          em1.className = 'col-emotion';
+          const em2 = document.createElement('div');
+          em2.className = 'col-emotion';
+
+          const fillEmotion = (cell, group) => {
+            if (!group) { cell.innerHTML = '<div class="placeholder">—</div>'; return; }
+            const wrap = document.createElement('div');
+            wrap.className = 'emotion-group';
+            const h = document.createElement('h4');
+            h.textContent = group.label;
+            const grid = document.createElement('div');
+            grid.className = 'emotion-grid';
+            for (let i = group.start; i <= group.end; i++) {
+              const filename = `${group.prefix}${i}.wav`;
+              const card = document.createElement('div');
+              card.className = 'audio-card';
+              const label = document.createElement('span');
+              label.className = 'fn';
+              label.textContent = filename;
+              const audio = document.createElement('audio');
+              audio.controls = true;
+              audio.preload = 'none';
+              audio.src = `${EMOTION_CONFIG.baseRoot}/${folder}/output/${filename}`;
+              card.appendChild(label);
+              card.appendChild(audio);
+              grid.appendChild(card);
+            }
+            wrap.appendChild(h);
+            wrap.appendChild(grid);
+            cell.appendChild(wrap);
+          };
+
+          fillEmotion(em1, groups[0]);
+          fillEmotion(em2, groups[1]);
+
+          container.appendChild(voiceCell);
+          container.appendChild(em1);
+          container.appendChild(em2);
+        });
+      }
+
+      // Inicialização da aba "Por emoção"
+      const selPasta = document.getElementById('sel-pasta');
+      const painelEmocao = document.getElementById('painel-emocao');
+      let emotionBuilt = false;
+      function ensureEmotionBuild() {
+        if (!emotionBuilt) {
+          buildEmotionMatrix(selPasta.value);
+          emotionBuilt = true;
+        }
+      }
+      // Se usuário abre a aba emoção
+      document.getElementById('tab-emocao').addEventListener('click', ensureEmotionBuild);
+      // Se a página abrir já nessa aba por algum motivo
+      if (painelEmocao.classList.contains('active')) ensureEmotionBuild();
+      // Mudança da seleção
+      selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
+    </script>
+
+    <script src="js/animheader.js"></script>
+  </body>
+</html>
