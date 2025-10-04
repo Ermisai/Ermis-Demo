@@ -2,7 +2,7 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8">
-    <title>YourTTS</title>
+    <title>Ermis TTS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -20,41 +20,41 @@
       body { font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
 
       /* --- Tabs --- */
-      .tabs { margin: 24px auto 0; max-width: 980px; background: var(--tab-bg); border: 1px solid var(--bd); border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.25); }
-      .tab-header { display: flex; flex-wrap: wrap; background: linear-gradient(180deg,var(--tab-muted),var(--tab-bg)); }
-      .tab-btn { appearance: none; background: transparent; color: var(--tab-text); padding: 14px 18px; font-weight: 700; border: 0; cursor: pointer; position: relative; }
-      .tab-btn[aria-selected="true"] { color: white; }
+      .tabs { margin: 24px auto 0; max-width: 1400px; width: calc(100% - 32px); background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+      .tab-header { display: flex; flex-wrap: wrap; background: #f1f5f9; }
+      .tab-btn { appearance: none; background: transparent; color: #0f172a; padding: 14px 18px; font-weight: 700; border: 0; cursor: pointer; position: relative; }
+      .tab-btn[aria-selected="true"] { color: #0f172a; }
       .tab-btn[aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; background: var(--tab-accent); border-radius: 3px 3px 0 0; }
-      .tab-panel { display: none; padding: 22px; background: #0a0f1c; color: var(--tab-text); }
+      .tab-panel { display: none; padding: 22px; background: transparent; color: #0f172a; }
       .tab-panel.active { display: block; }
 
       /* Audio grid */
-      .audio-folder { margin: 8px 0 0; border-top: 1px solid var(--bd); }
-      .audio-folder summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; color: #fff; }
+      .audio-folder { margin: 8px 0 0; border-top: 1px solid #e5e7eb; }
+      .audio-folder summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; color: #0f172a; }
       .audio-folder summary::-webkit-details-marker { display: none; }
-      .audio-folder summary span { opacity: .9; font-weight: 600; font-size: .95rem; color: var(--tab-text); }
+      .audio-folder summary span { opacity: .9; font-weight: 600; font-size: .95rem; color: #334155; }
       .audio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 0 18px 18px; }
-      .audio-card { background: #0c1424; border: 1px solid var(--bd); border-radius: 10px; padding: 10px; }
+      .audio-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
       .audio-card .fn { display: block; font-size: .85rem; opacity: .85; margin-bottom: 6px; word-break: break-all; }
       .audio-card audio { width: 100%; }
 
       /* Emoção: layout em 2 colunas (Voz | Emoção) */
       .emotion-controls { display:flex; align-items:center; gap:10px; padding: 0 0 16px 0; }
-      .emotion-select { background:#0c1424; color:var(--tab-text); border:1px solid var(--bd); border-radius:8px; padding:8px 10px; }
+      .emotion-select { background:#ffffff; color:#0f172a; border:1px solid #e5e7eb; border-radius:8px; padding:8px 10px; }
       .emotion-matrix { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 12px; align-items: start; }
       .emotion-row { display: contents; }
-      .col-voice { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:12px 14px; color:#fff; font-weight:700; }
-      .col-emotion { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:10px; }
-      .col-head { background:#13233b; border:1px solid var(--bd); border-radius:10px; padding:10px 14px; font-weight:800; color:#c7d2fe; }
-      .emotion-group { border:1px solid var(--bd); border-radius:10px; margin:8px 0; padding:10px; }
-      .emotion-group h4 { margin:0 0 8px 0; color:#fff; }
+      .col-voice { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; color:#0f172a; font-weight:700; }
+      .col-emotion { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
+      .col-head { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px; font-weight:800; color:#0f172a; }
+      .emotion-group { border:1px solid #e5e7eb; border-radius:10px; margin:8px 0; padding:10px; }
+      .emotion-group h4 { margin:0 0 8px 0; color:#0f172a; }
       .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
       .placeholder { opacity:.5; text-align:center; padding:12px; }
       .emotion-row { display: contents; }
-      .col-voice { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:12px 14px; color:#fff; font-weight:700; }
-      .col-emotion { background:#0c1424; border:1px solid var(--bd); border-radius:10px; padding:10px; }
-      .emotion-group { border:1px solid var(--bd); border-radius:10px; margin:8px 0; padding:10px; }
-      .emotion-group h4 { margin:0 0 8px 0; color:#fff; }
+      .col-voice { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; color:#0f172a; font-weight:700; }
+      .col-emotion { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
+      .emotion-group { border:1px solid #e5e7eb; border-radius:10px; margin:8px 0; padding:10px; }
+      .emotion-group h4 { margin:0 0 8px 0; color:#0f172a; }
       .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
 
       /* Header small fixes so it still looks ok */
@@ -71,40 +71,37 @@
       <div id="bg-header"></div>
       <canvas id="demo-canvas"></canvas>
       <div class="main-title">
-        <h1 class="project-name"><span><a href="index.html">YourTTS</a></span></h1>
-        <h2 class="project-tagline">Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone</h2>
+        <h1 class="project-name"><span><a href="index.html">Ermis TTS</a></span></h1>
+        <h2 class="project-tagline">Síntese neural multilíngue com clonagem de voz e controle de emoção</h2>
       </div>
     </section>
 
     <section class="main-content">
-      <center>
-        <a href="https://github.com/Edresson/YourTTS/" class="btn2">• GitHub •</a>
-        <a href="https://arxiv.org/abs/2112.02418" class="btn2">• Paper on arXiv •</a>
-        <a href="https://github.com/Edresson/YourTTS/#colab-demos" class="btn2">• Colab demos •</a>
-      </center>
+      <!-- Links removidos/ocultos enquanto ajustamos para Ermis -->
 
       <br><br>
       <div style="text-align: center;">
-        <h2>YourTTS: Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone</h2>
-        <p><b>Edresson Casanova, Julian Weber, Christopher Shulby, Arnaldo Candido Junior, Eren Gölge and Moacir Antonelli Ponti</b></p>
+        <h2>Ermis TTS: The best TTS for everyone</h2>
+        <p><b>Edresson Casanova, Julian Weber, Christopher Shulby, Arnaldo Candido Junior, Eren Gölge e Moacir Antonelli Ponti</b></p>
       </div>
 
-      <h3>Abstract:</h3>
+      <h3>Descrição</h3>
       <p>
-        YourTTS brings the power of a multilingual approach to the task of zero-shot multi-speaker TTS. Our method builds upon the VITS model and adds several novel modifications for zero-shot multi-speaker and multilingual training... (texto original mantido acima no seu arquivo)
+        <b>Ermis TTS</b> é um mecanismo de síntese de voz neural projetado para produção: suporta múltiplas vozes e idiomas, clonagem de voz (zero‑shot) a partir de poucos segundos de áudio e <i>style transfer</i> para emoções como <em>Impact</em>, <em>Sad</em> e variações de prosódia.
+        A pilha foi otimizada para baixa latência, alto paralelismo e fácil implantação em servidores ou notebooks, mantendo qualidade natural e alta similaridade com a voz alvo. As amostras abaixo ilustram organização por voz, por emoção e por modelo.
       </p>
 
-      <h3>System architecture:</h3>
-      <center><p><img src="resources/yourtts.png" width="560" alt="YourTTS architecture"></p></center>
 
-      <h2>Amostras Spark-TTS</h2>
+      <h2>Amostras Ermis-TTS</h2>
 
-      <!-- Abas simples com apenas texto -->
+      <p>
+        Abaixo estão demos geradas pelo pipeline da <b>Ermis</b>, organizadas em três abas: <b>Por voz</b> (pastas/vozes), <b>Por emoção</b> (matriz Voz × Emoção) e <b>Por modelo</b> (estrutura técnica). Os nomes de arquivos seguem o padrão <code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code> e <code>pt_mid_long_#.wav</code> para facilitar comparação.
+      </p>
+
       <div class="tabs" role="tablist" aria-label="Amostras organizadas">
         <div class="tab-header">
           <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-voz" id="tab-voz">Por voz</button>
           <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-emocao" id="tab-emocao">Por emoção</button>
-          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por modelo</button>
         </div>
         <div class="tab-panel active" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
           <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
@@ -158,25 +155,6 @@
           <p>Conteúdo "Por modelo": liste as pastas/modelos disponíveis (ex.: <code>female-alc-dub</code>, <code>male-alc-dub-2</code>) e o que diferencia cada um.</p>
         </div>
       </div>
-
-      <h3>Citation</h3>
-      <pre class="highlight">
-@ARTICLE{2021arXiv211202418C,
-  author = {{Casanova}, Edresson and {Weber}, Julian and {Shulby}, Christopher and {Junior}, Arnaldo Candido and {G{\"o}lge}, Eren and {Antonelli Ponti}, Moacir},
-  title = "{YourTTS: Towards Zero-Shot Multi-Speaker TTS and Zero-Shot Voice Conversion for everyone}",
-  journal = {arXiv e-prints},
-  keywords = {Computer Science - Sound, Computer Science - Computation and Language, Electrical Engineering and Systems Science - Audio and Speech Processing},
-  year = 2021,
-  month = dec,
-  eid = {arXiv:2112.02418},
-  pages = {arXiv:2112.02418},
-  archivePrefix = {arXiv},
-  eprint = {2112.02418},
-  primaryClass = {cs.SD},
-  adsurl = {https://ui.adsabs.harvard.edu/abs/2021arXiv211202418C},
-  adsnote = {Provided by the SAO/NASA Astrophysics Data System}
-}
-      </pre>
 
       <footer class="site-footer">
         <a href="https://coqui.ai/" title="Coqui AI" target="_blank"><img src="img/coqui.png" border="0" height="40" alt="Coqui AI"></a>
