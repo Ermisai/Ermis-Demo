@@ -64,6 +64,11 @@
       .main-title { position: relative; z-index: 2; display: grid; place-items: center; padding: 56px 16px; text-align: center; }
       .project-name a { color: white; text-decoration: none; }
       .project-tagline { color: #c7d2fe; font-weight: 600; }
+      .model-voice { margin: 10px 0 18px; padding: 12px 14px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; font-weight:800; color:#0f172a; }
+      .model-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px; }
+      .model-card { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; display:flex; flex-direction:column; }
+      .model-card audio { width:100%; margin-bottom:8px; }
+      .model-card p { margin:0; font-size:.95rem; line-height:1.35rem; color:#0f172a; }
     </style>
   </head>
   <body>
@@ -102,59 +107,58 @@
         <div class="tab-header">
           <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-voz" id="tab-voz">Por voz</button>
           <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-emocao" id="tab-emocao">Por emoção</button>
-          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por modelo</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por voz com texto</button>
         </div>
         <div class="tab-panel active" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
           <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
 
           <details class="audio-folder" open>
-            <summary>female-alc-dub <span>— Impact & Sad</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/female-alc-dub/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14},{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
+            <summary>Voz Feminina 01<span>— Impact & Sad</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/female-alc-dub/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":2},{"label":"Sad","prefix":"pt_sad_","start":0,"end":2}]'></div>
           </details>
 
           <details class="audio-folder">
-            <summary>female-alc-dub-2 <span>— Impact & Sad</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/female-alc-dub-2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14},{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
+            <summary>Voz Feminina 02<span>— Impact & Sad</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/female-alc-dub-2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":2},{"label":"Sad","prefix":"pt_sad_","start":0,"end":2}]'></div>
           </details>
 
           <details class="audio-folder">
-            <summary>male-alc-dub <span>— Mid-Long</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":19}]'></div>
+            <summary>Voz Masculina 01<span>— Mid-Long</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/male-alc-dub/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":5}]'></div>
           </details>
 
           <details class="audio-folder">
-            <summary>male-alc-dub-2 <span>— Mid-Long</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":24}]'></div>
+            <summary>Voz Masculina 02<span>— Mid-Long</span></summary>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/male-alc-dub-2/output" data-groups='[{"label":"Mid-Long","prefix":"pt_mid_long_","start":0,"end":2},{"label":"Impact","prefix":"pt_impact_","start":0,"end":2}]'></div>
           </details>
 
-          <details class="audio-folder">
+          <!-- <details class="audio-folder">
             <summary>male-alc-dub-2_2 <span>— Impact</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2_2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":14}]'></div>
-          </details>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/male-alc-dub-2_2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":5}]'></div>
+          </details> -->
 
-          <details class="audio-folder">
+          <!-- <details class="audio-folder">
             <summary>male-alc-dub-2_3 <span>— Sad</span></summary>
-            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz/male-alc-dub-2_3/output" data-groups='[{"label":"Sad","prefix":"pt_sad_","start":0,"end":14}]'></div>
-          </details>
+            <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/male-alc-dub-2_3/output" data-groups='[{"label":"Sad","prefix":"pt_sad_","start":0,"end":5}]'></div>
+          </details> -->
         </div>
         <div class="tab-panel" id="painel-emocao" role="tabpanel" aria-labelledby="tab-emocao">
           <div class="emotion-controls">
             <label for="sel-pasta">Escolher pasta:</label>
             <select id="sel-pasta" class="emotion-select">
               <option value="ALL">Todas</option>
-              <option value="female-alc-dub">female-alc-dub</option>
-              <option value="female-alc-dub-2">female-alc-dub-2</option>
-              <option value="male-alc-dub">male-alc-dub</option>
-              <option value="male-alc-dub-2">male-alc-dub-2</option>
-              <option value="male-alc-dub-2_2">male-alc-dub-2_2</option>
-              <option value="male-alc-dub-2_3">male-alc-dub-2_3</option>
+              <option value="female-alc-dub">Voz Feminina 01</option>
+              <option value="female-alc-dub-2">Voz Feminina 02</option>
+              <option value="male-alc-dub">Voz Masculina 01</option>
+              <option value="male-alc-dub-2">Voz Masculina 02</option>
             </select>
           </div>
           <div id="emotion-matrix" class="emotion-matrix" aria-live="polite"></div>
         </div>
         <div class="tab-panel" id="painel-modelo" role="tabpanel" aria-labelledby="tab-modelo">
-          <p>Conteúdo "Por modelo": liste as pastas/modelos disponíveis (ex.: <code>female-alc-dub</code>, <code>male-alc-dub-2</code>) e o que diferencia cada um.</p>
+          <div id="modelo-wrap"></div>
         </div>
+
       </div>
 
       <footer class="site-footer">
@@ -182,160 +186,328 @@
     </script>
 
     <script>
-      // Constrói os cartões de áudio a partir dos atributos data-* em cada .audio-grid
-      function buildAudioGrids() {
-        const grids = document.querySelectorAll('.audio-grid');
-        grids.forEach(grid => {
-          const base = grid.getAttribute('data-base');
-          /** @type {{label:string,prefix:string,start:number,end:number}[]} */
-          const groups = JSON.parse(grid.getAttribute('data-groups') || '[]');
-          groups.forEach(group => {
-            for (let i = group.start; i <= group.end; i++) {
-              const filename = `${group.prefix}${i}.wav`;
-              const card = document.createElement('div');
-              card.className = 'audio-card';
-              const label = document.createElement('span');
-              label.className = 'fn';
-              label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
-              const audio = document.createElement('audio');
-              audio.controls = true;
-              audio.src = `${base}/${filename}`;
-              audio.preload = 'none';
-              card.appendChild(label);
-              card.appendChild(audio);
-              grid.appendChild(card);
-            }
-          });
-        });
-      }
-      // Inicializa quando a aba "Por voz" estiver ativa pela primeira vez
-      const painelVoz = document.getElementById('painel-voz');
-      let audiosBuilt = false;
-      const ensureBuild = () => { if (!audiosBuilt) { buildAudioGrids(); audiosBuilt = true; } };
-      // Se já estiver ativa no load, constrói
-      if (painelVoz.classList.contains('active')) ensureBuild();
-      // Reconstrói ao clicar na aba "Por voz"
-      document.getElementById('tab-voz').addEventListener('click', ensureBuild);
-    </script>
+  // Constrói os cartões de áudio a partir dos atributos data-* em cada .audio-grid
+  function buildAudioGrids() {
+    const grids = document.querySelectorAll('.audio-grid');
+    grids.forEach(grid => {
+      const base = grid.getAttribute('data-base');
+      /** @type {{label:string,prefix:string,start:number,end:number}[]} */
+      const groups = JSON.parse(grid.getAttribute('data-groups') || '[]');
+      groups.forEach(group => {
+        for (let i = group.start; i <= group.end; i++) {
+          const filename = `${group.prefix}${i}.wav`;
+          const card = document.createElement('div');
+          card.className = 'audio-card';
 
-    <script>
-      // --- POR EMOÇÃO ---
-      const EMOTION_CONFIG = {
-        baseRoot: 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khz',
-        folders: {
-          'female-alc-dub': [
-            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 },
-            { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 14 }
-          ],
-          'female-alc-dub-2': [
-            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 },
-            { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 14 }
-          ],
-          'male-alc-dub': [
-            { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 19 }
-          ],
-          'male-alc-dub-2': [
-            { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 24 }
-          ],
-          'male-alc-dub-2_2': [
-            { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 14 }
-          ],
-          'male-alc-dub-2_3': [
-            { label: 'Sad', prefix: 'pt_sad_', start: 0, end: 14 }
-          ]
+          const label = document.createElement('span');
+          label.className = 'fn';
+          label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
+
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.src = `${base}/${filename}`;
+          audio.preload = 'none';
+
+          card.appendChild(label);
+          card.appendChild(audio);
+          grid.appendChild(card);
         }
+      });
+    });
+  }
+
+  // Inicializa quando a aba "Por voz" estiver ativa pela primeira vez
+  const painelVoz = document.getElementById('painel-voz');
+  let audiosBuilt = false;
+  const ensureBuild = () => { if (!audiosBuilt) { buildAudioGrids(); audiosBuilt = true; } };
+  if (painelVoz.classList.contains('active')) ensureBuild();
+  document.getElementById('tab-voz').addEventListener('click', ensureBuild);
+</script>
+
+
+   <script>
+  // --- POR EMOÇÃO ---
+  const VOICE_LABELS = {
+    'female-alc-dub':   'Voz Feminina 01',
+    'female-alc-dub-2': 'Voz Feminina 02',
+    'male-alc-dub':     'Voz Masculina 01',
+    'male-alc-dub-2':   'Voz Masculina 02'
+  };
+
+  const EMOTION_CONFIG = {
+    baseRoot: 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2',
+    folders: {
+      'female-alc-dub': [
+        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2 },
+        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 }
+      ],
+      'female-alc-dub-2': [
+        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2 },
+        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 }
+      ],
+      'male-alc-dub-2': [
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2 },
+        { label: 'Impact',   prefix: 'pt_impact_',   start: 0, end: 2 }
+      ],
+      'male-alc-dub': [
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 5 }
+      ]
+    }
+  };
+
+  function buildEmotionMatrix(selection = 'ALL') {
+    const container = document.getElementById('emotion-matrix');
+    container.innerHTML = '';
+
+    // Cabeçalho
+    const headVoice = document.createElement('div');
+    headVoice.className = 'col-voice col-head';
+    headVoice.textContent = 'Voz';
+    const headE1 = document.createElement('div');
+    headE1.className = 'col-emotion col-head';
+    headE1.textContent = 'Emoção 1';
+    const headE2 = document.createElement('div');
+    headE2.className = 'col-emotion col-head';
+    headE2.textContent = 'Emoção 2';
+    container.appendChild(headVoice);
+    container.appendChild(headE1);
+    container.appendChild(headE2);
+
+    const folders = Object.keys(EMOTION_CONFIG.folders);
+    const chosen = selection === 'ALL' ? folders : [selection];
+
+    chosen.forEach(folder => {
+      const groups = EMOTION_CONFIG.folders[folder] || [];
+
+      // Coluna 1: Voz
+      const voiceCell = document.createElement('div');
+      voiceCell.className = 'col-voice';
+      voiceCell.textContent = VOICE_LABELS[folder] || folder;
+
+      // Colunas 2 e 3: Emoções
+      const em1 = document.createElement('div'); em1.className = 'col-emotion';
+      const em2 = document.createElement('div'); em2.className = 'col-emotion';
+
+      const fillEmotion = (cell, group) => {
+        if (!group) { cell.innerHTML = '<div class="placeholder">—</div>'; return; }
+        const wrap = document.createElement('div');
+        wrap.className = 'emotion-group';
+        const h = document.createElement('h4'); h.textContent = group.label;
+        const grid = document.createElement('div'); grid.className = 'emotion-grid';
+
+        for (let i = group.start; i <= group.end; i++) {
+          const filename = `${group.prefix}${i}.wav`;
+          const card = document.createElement('div'); card.className = 'audio-card';
+          const label = document.createElement('span'); label.className = 'fn';
+          label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
+          const audio = document.createElement('audio'); audio.controls = true; audio.preload = 'none';
+          audio.src = `${EMOTION_CONFIG.baseRoot}/${folder}/output/${filename}`;
+          card.appendChild(label); card.appendChild(audio); grid.appendChild(card);
+        }
+        wrap.appendChild(h); wrap.appendChild(grid); cell.appendChild(wrap);
       };
 
-      function buildEmotionMatrix(selection = 'ALL') {
-        const container = document.getElementById('emotion-matrix');
-        container.innerHTML = '';
+      fillEmotion(em1, groups[0]);
+      fillEmotion(em2, groups[1]);
 
-        // Cabeçalho: Voz | Emoção 1 | Emoção 2
-        const headVoice = document.createElement('div');
-        headVoice.className = 'col-voice col-head';
-        headVoice.textContent = 'Voz';
-        const headE1 = document.createElement('div');
-        headE1.className = 'col-emotion col-head';
-        headE1.textContent = 'Emoção 1';
-        const headE2 = document.createElement('div');
-        headE2.className = 'col-emotion col-head';
-        headE2.textContent = 'Emoção 2';
-        container.appendChild(headVoice);
-        container.appendChild(headE1);
-        container.appendChild(headE2);
+      container.appendChild(voiceCell);
+      container.appendChild(em1);
+      container.appendChild(em2);
+    });
+  }
 
-        const folders = Object.keys(EMOTION_CONFIG.folders);
-        const chosen = selection === 'ALL' ? folders : [selection];
+  // Inicialização da aba "Por emoção"
+  const selPasta = document.getElementById('sel-pasta');
+  const painelEmocao = document.getElementById('painel-emocao');
+  let emotionBuilt = false;
+  function ensureEmotionBuild() {
+    if (!emotionBuilt) {
+      buildEmotionMatrix(selPasta.value);
+      emotionBuilt = true;
+    }
+  }
+  document.getElementById('tab-emocao').addEventListener('click', ensureEmotionBuild);
+  if (painelEmocao.classList.contains('active')) ensureEmotionBuild();
+  selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
+</script>
 
-        chosen.forEach(folder => {
-          const groups = EMOTION_CONFIG.folders[folder] || [];
+<script>
+  // --- POR MODELO (com sequência de legendas por grupo) ---
+  const MODEL_BASE_ROOT = 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2';
 
-          // Coluna 1: Voz
-          const voiceCell = document.createElement('div');
-          voiceCell.className = 'col-voice';
-          voiceCell.textContent = folder;
+  const CAPTIONS = {
+    raiva: [
+      // "Eu já tô exausto de promessas vazias; chega de desculpas, eu quero resultado agora.", 1
+      // "Se empurraram esse problema pra amanhã de novo, eu vou bater a porta com força.", 2
+      // "Não me venha com meia-verdade; a verdade inteira dói, mas resolve.", 3
+      // "Horas de fila, zero respeito: é assim que tratam quem paga a conta?", 4
+      // "Falar é fácil; difícil é encarar o caos que vocês mesmos criaram.", 5 
+      // "Pare de culpar o trânsito; o atraso é de quem nunca se planeja.", 6 
+      // "Quando a paciência acaba, até o silêncio vira grito preso na garganta.", 7
+      // "Prometeram transparência, mas trancaram tudo a sete chaves; que piada amarga.", 8
+      // "Eu avisei mil vezes; agora consertem o estrago sem chororô.", 9
+      // "Batem no peito por eficiência, mas tropeçam no básico, todos os dias.", 10 
+      // "Se é pra fingir que está tudo bem, prefiro o barulho da revolta.",  11
+      // "Chega de empurrar com a barriga; ou enfrentamos isso, ou afundamos juntos.", 12
+      // "Você me cobra calma, mas foi você quem riscou o fósforo.", 13
+      // "A cada desculpa nova, minha vontade de ir embora cresce mais um palmo.", 14
+      // "O relógio marcou 23:47 e ainda estou aqui, preso à sua desorganização." 15
+      
 
-          // Colunas 2 e 3: Emoções (até 2 por linha)
-          const em1 = document.createElement('div');
-          em1.className = 'col-emotion';
-          const em2 = document.createElement('div');
-          em2.className = 'col-emotion';
+      "Eu já tô exausto de promessas vazias; chega de desculpas, eu quero resultado agora.", 
+      "Se empurraram esse problema pra amanhã de novo, eu vou bater a porta com força.", 
+      "Não me venha com meia-verdade; a verdade inteira dói, mas resolve.", 
+      "Horas de fila, zero respeito: é assim que tratam quem paga a conta?", 
+      "Falar é fácil; difícil é encarar o caos que vocês mesmos criaram.", 
+      "Pare de culpar o trânsito; o atraso é de quem nunca se planeja.", 
+      "Quando a paciência acaba, até o silêncio vira grito preso na garganta.", 
+      "Prometeram transparência, mas trancaram tudo a sete chaves; que piada amarga.", 
+      "Eu avisei mil vezes; agora consertem o estrago sem chororô.",
+      "Batem no peito por eficiência, mas tropeçam no básico, todos os dias.", 
+      "Se é pra fingir que está tudo bem, prefiro o barulho da revolta.",  
+      "Chega de empurrar com a barriga; ou enfrentamos isso, ou afundamos juntos.",
+      "Você me cobra calma, mas foi você quem riscou o fósforo.", 
+      "A cada desculpa nova, minha vontade de ir embora cresce mais um palmo.", 
+      "O relógio marcou 23:47 e ainda estou aqui, preso à sua desorganização." 
+    ],
+    emocao: [
+      "Quando a chuva tocou a janela, senti sua ausência como um eco longo no peito.",
+      "Ela segurou a carta com dedos trêmulos e sorriu como quem reencontra o próprio nome.",
+      "No silêncio da madrugada, a cidade respirou fundo e me emprestou coragem.",
+      "Eu tentei ser forte, mas a saudade atravessou a sala como um relâmpago manso.",
+      "Se a vida pedir paciência, eu prometo ficar, mesmo que a noite demore a passar.",
+      "Quando ele disse 'volto logo', o relógio aprendeu a andar devagar.",
+      "Entre o café amargo e o abraço tardio, descobri que ainda sei recomeçar.",
+      "Ela achou beleza nas rachaduras da parede e chamou aquilo de casa.",
+      "Se eu me perder, que seja no sussurro do seu riso, onde tudo faz sentido.",
+      "Eu vi o mar e pensei no futuro; a maré subia como um convite à mudança.",
+      "A esperança cabe inteira num gesto pequeno: um copo d'água, uma porta aberta.",
+      "Ele chorou em silêncio, e mesmo assim a sala ficou cheia de tempestade.",
+      "Quando a música começou, a memória abriu janelas que eu nem lembrava que existiam.",
+      "Se o medo apertar, respira comigo; prometo que o mundo fica menor.",
+      "No primeiro raio de sol, percebi: sobrevivi à noite, e isso já é vitória."
+    ],
+      medo: [
+      "Por causa do transito intenso, cheguamos a reunião um pouco atrasados.",
+      "Se você quiser ter sucesso, deve estar preparado para trabalhar muito duro e manter o foco.",
+      "Antes de sair de feria lembre se regar as plantas e trancar todas as portas.",
+      "Eu tentei ser forte, mas a saudade atravessou a sala como um relâmpago manso.",
+      "Se a vida pedir paciência, eu prometo ficar, mesmo que a noite demore a passar.",
+      "Quando ele disse 'volto logo', o relógio aprendeu a andar devagar.",
+      "Entre o café amargo e o abraço tardio, descobri que ainda sei recomeçar.",
+      "Ela achou beleza nas rachaduras da parede e chamou aquilo de casa.",
+      "Se eu me perder, que seja no sussurro do seu riso, onde tudo faz sentido.",
+      "Eu vi o mar e pensei no futuro; a maré subia como um convite à mudança.",
+      "A esperança cabe inteira num gesto pequeno: um copo d'água, uma porta aberta.",
+      "Ele chorou em silêncio, e mesmo assim a sala ficou cheia de tempestade.",
+      "Quando a música começou, a memória abriu janelas que eu nem lembrava que existiam.",
+      "Se o medo apertar, respira comigo; prometo que o mundo fica menor.",
+      "No primeiro raio de sol, percebi: sobrevivi à noite, e isso já é vitória."
+    ]
+  };
 
-          const fillEmotion = (cell, group) => {
-            if (!group) { cell.innerHTML = '<div class="placeholder">—</div>'; return; }
-            const wrap = document.createElement('div');
-            wrap.className = 'emotion-group';
-            const h = document.createElement('h4');
-            h.textContent = group.label;
-            const grid = document.createElement('div');
-            grid.className = 'emotion-grid';
-            for (let i = group.start; i <= group.end; i++) {
-              const filename = `${group.prefix}${i}.wav`;
-              const card = document.createElement('div');
-              card.className = 'audio-card';
-              const label = document.createElement('span');
-              label.className = 'fn';
-              label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
-              const audio = document.createElement('audio');
-              audio.controls = true;
-              audio.preload = 'none';
-              audio.src = `${EMOTION_CONFIG.baseRoot}/${folder}/output/${filename}`;
-              card.appendChild(label);
-              card.appendChild(audio);
-              grid.appendChild(card);
-            }
-            wrap.appendChild(h);
-            wrap.appendChild(grid);
-            cell.appendChild(wrap);
-          };
+  const DEFAULT_CAP_BY_GROUP = { 'Impact': 'raiva', 'Sad': 'emocao', 'Mid-Long': 'emocao' };
 
-          fillEmotion(em1, groups[0]);
-          fillEmotion(em2, groups[1]);
+  // >>> Aqui você pode definir a sequência por grupo com capSeq (1-based)
+  const MODEL_VOICES = [
+    { folder: 'female-alc-dub', label: 'Voz Feminina 01',
+      groups: [
+        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2, capSeq: [3,9,12] },
+        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 ,capSeq: [5,7,14] } // usa DEFAULT
+      ]
+    },
+    { folder: 'female-alc-dub-2', label: 'Voz Feminina 02',
+      groups: [
+        // EXEMPLO PEDIDO: usa a sequência para cada áudio, repetindo se necessário
+        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2, cap: 'raiva',  capSeq: [3,9,14] },
+        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2, cap:'emocao', capSeq: [1,4,13] } 
+      ]
+    },
+    { folder: 'male-alc-dub', label: 'Voz Masculina 01',
+      groups: [
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2, cap: 'medo',  capSeq: [1,2,3] },
+      ]
+    },
+    { folder: 'male-alc-dub-2', label: 'Voz Masculina 02',
+      groups: [
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2,cap: 'medo',  capSeq: [1,2,3,4,5,6] }
+      ]
+    }
+  ];
 
-          container.appendChild(voiceCell);
-          container.appendChild(em1);
-          container.appendChild(em2);
-        });
-      }
+  // Rotação padrão quando não há sequência
+  const capIndex = { raiva: 0, emocao: 0 };
+  function nextCaption(key) {
+    const arr = CAPTIONS[key] || [];
+    if (!arr.length) return '';
+    const i = capIndex[key] % arr.length;
+    capIndex[key] += 1;
+    return arr[i];
+  }
 
-      // Inicialização da aba "Por emoção"
-      const selPasta = document.getElementById('sel-pasta');
-      const painelEmocao = document.getElementById('painel-emocao');
-      let emotionBuilt = false;
-      function ensureEmotionBuild() {
-        if (!emotionBuilt) {
-          buildEmotionMatrix(selPasta.value);
-          emotionBuilt = true;
+  // Pega legenda segundo a sequência do grupo (1-based); se não existir, cai na rotação
+  function getCaptionFor(capKey, group, fileIdx) {
+    const arr = CAPTIONS[capKey] || [];
+    if (!arr.length) return '';
+
+    if (Array.isArray(group.capSeq) && group.capSeq.length) {
+      // posição do áudio dentro do grupo (0,1,2,...) para ciclar a sequência
+      const localPos = (fileIdx - group.start);
+      const chosenOneBased = group.capSeq[ localPos % group.capSeq.length ];
+      const chosenZeroBased = Math.max(1, Number(chosenOneBased) || 1) - 1; // garante 1-based amigável
+      return arr[ chosenZeroBased % arr.length ];
+    }
+    return nextCaption(capKey);
+  }
+
+  function buildModelPanel() {
+    const wrap = document.getElementById('modelo-wrap');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    capIndex.raiva = 0; capIndex.emocao = 0;
+
+    MODEL_VOICES.forEach(v => {
+      const head = document.createElement('div');
+      head.className = 'model-voice';
+      head.textContent = v.label;
+      wrap.appendChild(head);
+
+      const grid = document.createElement('div');
+      grid.className = 'model-grid';
+
+      v.groups.forEach(g => {
+        const capKey = g.cap || DEFAULT_CAP_BY_GROUP[g.label] || 'emocao';
+        for (let i = g.start; i <= g.end; i++) {
+          const filename = `${g.prefix}${i}.wav`;
+
+          const card = document.createElement('div');
+          card.className = 'model-card';
+
+          const audio = document.createElement('audio');
+          audio.controls = true;
+          audio.preload = 'none';
+          audio.src = `${MODEL_BASE_ROOT}/${v.folder}/output/${filename}`;
+
+          const line = document.createElement('p');
+          line.textContent = getCaptionFor(capKey, g, i);
+
+          card.appendChild(audio);
+          card.appendChild(line);
+          grid.appendChild(card);
         }
-      }
-      // Se usuário abre a aba emoção
-      document.getElementById('tab-emocao').addEventListener('click', ensureEmotionBuild);
-      // Se a página abrir já nessa aba por algum motivo
-      if (painelEmocao.classList.contains('active')) ensureEmotionBuild();
-      // Mudança da seleção
-      selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
-    </script>
+      });
 
+      wrap.appendChild(grid);
+    });
+  }
+
+  const tabModeloBtn = document.getElementById('tab-modelo');
+  const painelModelo = document.getElementById('painel-modelo');
+  let modelBuilt = false;
+  function ensureModelBuild() { if (!modelBuilt) { buildModelPanel(); modelBuilt = true; } }
+  tabModeloBtn.addEventListener('click', ensureModelBuild);
+  if (painelModelo.classList.contains('active')) ensureModelBuild();
+</script>
     <script src="js/animheader.js"></script>
   </body>
 </html>
