@@ -64,11 +64,66 @@
       .main-title { position: relative; z-index: 2; display: grid; place-items: center; padding: 56px 16px; text-align: center; }
       .project-name a { color: white; text-decoration: none; }
       .project-tagline { color: #c7d2fe; font-weight: 600; }
-      .model-voice { margin: 10px 0 18px; padding: 12px 14px; background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; font-weight:800; color:#0f172a; }
-      .model-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:12px; }
-      .model-card { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; display:flex; flex-direction:column; }
-      .model-card audio { width:100%; margin-bottom:8px; }
-      .model-card p { margin:0; font-size:.95rem; line-height:1.35rem; color:#0f172a; }
+.model-voice { 
+        margin: 8px 0 0; 
+        padding: 14px 18px; 
+        background: #f1f5f9;
+        border-top: 1px solid #e5e7eb;
+        font-weight: 700;
+        color: #0f172a;
+        cursor: pointer;
+        list-style: none;
+        transition: background 0.2s ease;
+      }
+      .model-voice:hover {
+        background: #e2e8f0;
+      }
+      .model-voice::-webkit-details-marker { display: none; }
+      .model-voice span {
+        opacity: .9;
+        font-weight: 600;
+        font-size: .95rem;
+        color: #334155;
+        margin-left: 8px;
+      }
+      .model-content {
+        padding: 18px;
+      }
+      .model-grid { 
+        display:grid; 
+        grid-template-columns: repeat(auto-fill, minmax(320px,1fr)); 
+        gap:16px; 
+        margin-top: 16px;
+      }
+      .model-card { 
+        background:#ffffff; 
+        border:1px solid #e5e7eb; 
+        border-radius:12px; 
+        padding:14px; 
+        display:flex; 
+        flex-direction:column; 
+        gap:10px;
+        transition: all 0.2s ease;
+        box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      }
+      .model-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,.1);
+        transform: translateY(-2px);
+      }
+      .model-card audio { 
+        width:100%; 
+        border-radius: 8px;
+      }
+      .model-card p { 
+        margin:0; 
+        font-size:.92rem; 
+        line-height:1.5rem; 
+        color:#334155;
+        padding: 10px 12px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border-left: 3px solid var(--tab-accent);
+      }
     </style>
   </head>
   <body>
@@ -331,44 +386,48 @@
   selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
 </script>
 
+<style>
+  /* opcional: deixa o bloco do áudio de referência bonitinho */
+  .ref-audio {
+    display:flex; align-items:center; gap:10px;
+    margin: 6px 0 14px;
+    padding:10px; border:1px solid #e5e7eb; border-radius:10px; background:#ffffff;
+    font-weight:600; color:#0f172a;
+  }
+  .ref-audio audio { width: 320px; max-width: 100%; }
+</style>
+
 <script>
-  // --- POR MODELO (com sequência de legendas por grupo) ---
+  // --- POR MODELO (com áudio de referência por voz + sequência de legendas) ---
   const MODEL_BASE_ROOT = 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2';
+
+  // >>> Base dos áudios de referência (ajuste se mudar a pasta)
+  const REF_BASE_ROOT = 'audios_demo/Ermis/audios_gerados_spark_tts/output1';
+  // >>> Arquivos de referência por voz/pasta (TROQUE os nomes conforme os seus arquivos)
+  const REF_VOICE_FILES = {
+    'female-alc-dub':  'example_female_dub_2.wav',   // Voz Feminina 01
+    'female-alc-dub-2':'example_female_dub_3_v2.wav',  // Voz Feminina 02
+    'male-alc-dub':    'example_male_dub.wav',     // Voz Masculina 01
+    'male-alc-dub-2':  'example_male_dub_2.wav'     // Voz Masculina 02
+  };
 
   const CAPTIONS = {
     raiva: [
-      // "Eu já tô exausto de promessas vazias; chega de desculpas, eu quero resultado agora.", 1
-      // "Se empurraram esse problema pra amanhã de novo, eu vou bater a porta com força.", 2
-      // "Não me venha com meia-verdade; a verdade inteira dói, mas resolve.", 3
-      // "Horas de fila, zero respeito: é assim que tratam quem paga a conta?", 4
-      // "Falar é fácil; difícil é encarar o caos que vocês mesmos criaram.", 5 
-      // "Pare de culpar o trânsito; o atraso é de quem nunca se planeja.", 6 
-      // "Quando a paciência acaba, até o silêncio vira grito preso na garganta.", 7
-      // "Prometeram transparência, mas trancaram tudo a sete chaves; que piada amarga.", 8
-      // "Eu avisei mil vezes; agora consertem o estrago sem chororô.", 9
-      // "Batem no peito por eficiência, mas tropeçam no básico, todos os dias.", 10 
-      // "Se é pra fingir que está tudo bem, prefiro o barulho da revolta.",  11
-      // "Chega de empurrar com a barriga; ou enfrentamos isso, ou afundamos juntos.", 12
-      // "Você me cobra calma, mas foi você quem riscou o fósforo.", 13
-      // "A cada desculpa nova, minha vontade de ir embora cresce mais um palmo.", 14
-      // "O relógio marcou 23:47 e ainda estou aqui, preso à sua desorganização." 15
-      
-
-      "Eu já tô exausto de promessas vazias; chega de desculpas, eu quero resultado agora.", 
-      "Se empurraram esse problema pra amanhã de novo, eu vou bater a porta com força.", 
-      "Não me venha com meia-verdade; a verdade inteira dói, mas resolve.", 
-      "Horas de fila, zero respeito: é assim que tratam quem paga a conta?", 
-      "Falar é fácil; difícil é encarar o caos que vocês mesmos criaram.", 
-      "Pare de culpar o trânsito; o atraso é de quem nunca se planeja.", 
-      "Quando a paciência acaba, até o silêncio vira grito preso na garganta.", 
-      "Prometeram transparência, mas trancaram tudo a sete chaves; que piada amarga.", 
+      "Eu já tô exausto de promessas vazias; chega de desculpas, eu quero resultado agora.",
+      "Se empurraram esse problema pra amanhã de novo, eu vou bater a porta com força.",
+      "Não me venha com meia-verdade; a verdade inteira dói, mas resolve.",
+      "Horas de fila, zero respeito: é assim que tratam quem paga a conta?",
+      "Falar é fácil; difícil é encarar o caos que vocês mesmos criaram.",
+      "Pare de culpar o trânsito; o atraso é de quem nunca se planeja.",
+      "Quando a paciência acaba, até o silêncio vira grito preso na garganta.",
+      "Prometeram transparência, mas trancaram tudo a sete chaves; que piada amarga.",
       "Eu avisei mil vezes; agora consertem o estrago sem chororô.",
-      "Batem no peito por eficiência, mas tropeçam no básico, todos os dias.", 
-      "Se é pra fingir que está tudo bem, prefiro o barulho da revolta.",  
+      "Batem no peito por eficiência, mas tropeçam no básico, todos os dias.",
+      "Se é pra fingir que está tudo bem, prefiro o barulho da revolta.",
       "Chega de empurrar com a barriga; ou enfrentamos isso, ou afundamos juntos.",
-      "Você me cobra calma, mas foi você quem riscou o fósforo.", 
-      "A cada desculpa nova, minha vontade de ir embora cresce mais um palmo.", 
-      "O relógio marcou 23:47 e ainda estou aqui, preso à sua desorganização." 
+      "Você me cobra calma, mas foi você quem riscou o fósforo.",
+      "A cada desculpa nova, minha vontade de ir embora cresce mais um palmo.",
+      "O relógio marcou 23:47 e ainda estou aqui, preso à sua desorganização."
     ],
     emocao: [
       "Quando a chuva tocou a janela, senti sua ausência como um eco longo no peito.",
@@ -387,10 +446,10 @@
       "Se o medo apertar, respira comigo; prometo que o mundo fica menor.",
       "No primeiro raio de sol, percebi: sobrevivi à noite, e isso já é vitória."
     ],
-      medo: [
-      "Por causa do transito intenso, cheguamos a reunião um pouco atrasados.",
+    medo: [
+      "Por causa do trânsito intenso, chegamos à reunião um pouco atrasados.",
       "Se você quiser ter sucesso, deve estar preparado para trabalhar muito duro e manter o foco.",
-      "Antes de sair de feria lembre se regar as plantas e trancar todas as portas.",
+      "Antes de sair de férias, lembre-se de regar as plantas e trancar todas as portas.",
       "Eu tentei ser forte, mas a saudade atravessou a sala como um relâmpago manso.",
       "Se a vida pedir paciência, eu prometo ficar, mesmo que a noite demore a passar.",
       "Quando ele disse 'volto logo', o relógio aprendeu a andar devagar.",
@@ -403,75 +462,132 @@
       "Quando a música começou, a memória abriu janelas que eu nem lembrava que existiam.",
       "Se o medo apertar, respira comigo; prometo que o mundo fica menor.",
       "No primeiro raio de sol, percebi: sobrevivi à noite, e isso já é vitória."
+    ],
+    portuguese_sentences_mid_long : [
+      "Embora estivesse chovendo, eles decidiram passear na floresta.",
+      "Por causa do trânsito intenso, chegamos à reunião um pouco atrasados.",
+      "Mesmo se sentindo cansada, ela continuou a trabalhar em seu projeto até tarde da noite.",
+      "Se você quer ter sucesso, deve estar preparado para trabalhar muito duro e manter o foco.",
+      "Antes de sair de férias, lembre-se de regar as plantas e trancar todas as portas.",
+      "Depois de terminar o trabalho, ele relaxou ouvindo música clássica e lendo um livro.",
+      "Enquanto as crianças brincavam no jardim, seus pais preparavam o almoço na cozinha.",
+      "Apesar das dificuldades, eles conseguiram concluir o projeto com sucesso e no prazo.",
+      "Considerando a previsão do tempo, pode ser uma boa ideia levar um guarda-chuva com você hoje.",
+      "Para melhorar suas habilidades de comunicação, pratique falar em público e ouça ativamente os outros.",
+      "Para atingir seus objetivos, é importante definir metas realistas e criar um plano.",
+      "Sempre que me sinto estressado, gosto de dar uma caminhada no parque ou ouvir música calmante.",
+      "Assim que o filme começou, as luzes diminuíram e todos ficaram quietos no teatro.",
+      "Como era feriado, muitas famílias decidiram passar o dia na praia ou no campo.",
+      "Antes de tomar uma decisão, é sempre sensato considerar todas as opções e resultados possíveis.",
+      "Embora nunca tivesse tentado antes, ele achou o snowboard surpreendentemente divertido e emocionante.",
+      "Como ela era muito organizada e eficiente, sempre conseguia terminar suas tarefas rapidamente.",
+      "Mesmo que o restaurante estivesse lotado, eles encontraram uma mesa agradável perto da janela com uma ótima vista.",
+      "Se você está planejando viajar para o exterior, é essencial ter um passaporte válido e quaisquer vistos necessários.",
+      "Antes de iniciar qualquer novo programa de exercícios, é aconselhável consultar seu médico ou um especialista em fitness.",
+      "Depois de passar muitos anos morando na cidade, eles decidiram se mudar para uma vila tranquila e pacífica.",
+      "Enquanto o chef preparava o prato principal, os garçons estavam preparando as mesas para a noite.",
+      "Apesar dos contratempos iniciais, a equipe perseverou e acabou atingindo seus objetivos de longo prazo.",
+      "Considerando a complexidade da situação, é importante abordar o problema com planejamento e estratégia cuidadosos.",
+      "Para garantir o sucesso do evento, precisamos coordenar todos os diferentes aspectos e trabalhar juntos de forma eficaz."
     ]
   };
 
   const DEFAULT_CAP_BY_GROUP = { 'Impact': 'raiva', 'Sad': 'emocao', 'Mid-Long': 'emocao' };
 
-  // >>> Aqui você pode definir a sequência por grupo com capSeq (1-based)
+  // Sequência por grupo (1-based) — edite à vontade:
   const MODEL_VOICES = [
     { folder: 'female-alc-dub', label: 'Voz Feminina 01',
       groups: [
-        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2, capSeq: [3,9,12] },
-        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 ,capSeq: [5,7,14] } // usa DEFAULT
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [1,5,12] },
+        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2,             cap: 'emocao', capSeq: [5,7,13] }
       ]
     },
     { folder: 'female-alc-dub-2', label: 'Voz Feminina 02',
       groups: [
-        // EXEMPLO PEDIDO: usa a sequência para cada áudio, repetindo se necessário
-        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2, cap: 'raiva',  capSeq: [3,9,14] },
-        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2, cap:'emocao', capSeq: [1,4,13] } 
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [3,9,14] },
+        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2,             cap: 'emocao', capSeq: [1,4,13] }
       ]
     },
     { folder: 'male-alc-dub', label: 'Voz Masculina 01',
       groups: [
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2, cap: 'medo',  capSeq: [1,2,3] },
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 5,            cap: 'portuguese_sentences_mid_long',   capSeq: [2,6,5,13,15,17] },
       ]
     },
     { folder: 'male-alc-dub-2', label: 'Voz Masculina 02',
       groups: [
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2,cap: 'medo',  capSeq: [1,2,3,4,5,6] }
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [1,3,4] },
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2,            cap: 'portuguese_sentences_mid_long',   capSeq: [2,4,21] },
       ]
     }
   ];
 
-  // Rotação padrão quando não há sequência
-  const capIndex = { raiva: 0, emocao: 0 };
+  // Rotação por chave dinâmica
+  const capIndex = {};
   function nextCaption(key) {
     const arr = CAPTIONS[key] || [];
     if (!arr.length) return '';
+    capIndex[key] = (capIndex[key] || 0);
     const i = capIndex[key] % arr.length;
     capIndex[key] += 1;
     return arr[i];
   }
 
-  // Pega legenda segundo a sequência do grupo (1-based); se não existir, cai na rotação
+  // Pega legenda segundo a sequência do grupo; se não houver, usa rotação
   function getCaptionFor(capKey, group, fileIdx) {
     const arr = CAPTIONS[capKey] || [];
     if (!arr.length) return '';
-
     if (Array.isArray(group.capSeq) && group.capSeq.length) {
-      // posição do áudio dentro do grupo (0,1,2,...) para ciclar a sequência
       const localPos = (fileIdx - group.start);
       const chosenOneBased = group.capSeq[ localPos % group.capSeq.length ];
-      const chosenZeroBased = Math.max(1, Number(chosenOneBased) || 1) - 1; // garante 1-based amigável
+      const chosenZeroBased = Math.max(1, Number(chosenOneBased) || 1) - 1;
       return arr[ chosenZeroBased % arr.length ];
     }
     return nextCaption(capKey);
   }
 
+  // === AJUSTE: agora cada voz vira <details><summary> ... </summary><div class="model-content">...</div></details>
   function buildModelPanel() {
     const wrap = document.getElementById('modelo-wrap');
     if (!wrap) return;
     wrap.innerHTML = '';
-    capIndex.raiva = 0; capIndex.emocao = 0;
 
-    MODEL_VOICES.forEach(v => {
-      const head = document.createElement('div');
-      head.className = 'model-voice';
-      head.textContent = v.label;
-      wrap.appendChild(head);
+    // zera índices de rotação
+    Object.keys(CAPTIONS).forEach(k => capIndex[k] = 0);
 
+    MODEL_VOICES.forEach((v, idx) => {
+      // Cria bloco colapsável por voz
+      const det = document.createElement('details');
+      det.className = 'model-voice';
+      if (idx === 0) det.setAttribute('open', ''); // opcional: primeira aberta
+
+      const sum = document.createElement('summary');
+      sum.textContent = v.label;
+      det.appendChild(sum);
+
+      // Conteúdo da voz
+      const content = document.createElement('div');
+      content.className = 'model-content';
+
+      // Áudio de referência por voz (se houver)
+      const refName = REF_VOICE_FILES[v.folder];
+      if (refName) {
+        const ref = document.createElement('div');
+        ref.className = 'ref-audio';
+
+        const audioRef = document.createElement('audio');
+        audioRef.controls = true;
+        audioRef.preload = 'none';
+        audioRef.src = `${REF_BASE_ROOT}/${refName}`;
+
+        const tag = document.createElement('span');
+        tag.textContent = 'Áudio de referência';
+
+        ref.appendChild(audioRef);
+        ref.appendChild(tag);
+        content.appendChild(ref);
+      }
+
+      // Grid de cartões (áudio + legenda)
       const grid = document.createElement('div');
       grid.className = 'model-grid';
 
@@ -497,10 +613,13 @@
         }
       });
 
-      wrap.appendChild(grid);
+      content.appendChild(grid);
+      det.appendChild(content);
+      wrap.appendChild(det);
     });
   }
 
+  // Carrega quando abrir a aba
   const tabModeloBtn = document.getElementById('tab-modelo');
   const painelModelo = document.getElementById('painel-modelo');
   let modelBuilt = false;
