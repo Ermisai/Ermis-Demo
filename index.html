@@ -87,23 +87,27 @@
 
       <h3>Descrição</h3>
       <p>
-        <b>Ermis TTS</b> é um motor de síntese de voz neural para produção que clona vozes e transfere emoções, otimizado para alta performance e qualidade. 
+        <b>Ermis TTS</b> é um mecanismo de síntese de voz neural projetado para produção: suporta múltiplas vozes e idiomas, clonagem de voz (zero‑shot) a partir de poucos segundos de áudio e <i>style transfer</i> para emoções como <em>Impact</em>, <em>Sad</em> e variações de prosódia.
+        A pilha foi otimizada para baixa latência, alto paralelismo e fácil implantação em servidores ou notebooks, mantendo qualidade natural e alta similaridade com a voz alvo. As amostras abaixo ilustram organização por voz, por emoção e por modelo.
       </p>
 
+      <h3>System architecture:</h3>
+      <center><p><img src="resources/yourtts.png" width="560" alt="YourTTS architecture"></p></center>
 
       <h2>Amostras Ermis-TTS</h2>
 
       <p>
-        As amostras de áudio do Ermis estão organizadas por voz, emoção e modelo, com nomes de arquivo padronizados para facilitar a comparação.
+        Abaixo estão demos geradas pelo pipeline da <b>Ermis</b>, organizadas em três abas: <b>Por voz</b> (pastas/vozes), <b>Por emoção</b> (matriz Voz × Emoção) e <b>Por modelo</b> (estrutura técnica). Os nomes de arquivos seguem o padrão <code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code> e <code>pt_mid_long_#.wav</code> para facilitar comparação.
       </p>
 
       <div class="tabs" role="tablist" aria-label="Amostras organizadas">
         <div class="tab-header">
           <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-voz" id="tab-voz">Por voz</button>
           <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-emocao" id="tab-emocao">Por emoção</button>
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por modelo</button>
         </div>
         <div class="tab-panel active" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
-          <p>Prévia por voz, separados por falantes. Expanda uma pasta para ver os áudios.</p>
+          <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
 
           <details class="audio-folder" open>
             <summary>female-alc-dub <span>— Impact & Sad</span></summary>
@@ -137,9 +141,9 @@
         </div>
         <div class="tab-panel" id="painel-emocao" role="tabpanel" aria-labelledby="tab-emocao">
           <div class="emotion-controls">
-            <label for="sel-pasta">Escolher falante:</label>
+            <label for="sel-pasta">Escolher pasta:</label>
             <select id="sel-pasta" class="emotion-select">
-              <option value="ALL">Todos</option>
+              <option value="ALL">Todas</option>
               <option value="female-alc-dub">female-alc-dub</option>
               <option value="female-alc-dub-2">female-alc-dub-2</option>
               <option value="male-alc-dub">male-alc-dub</option>
@@ -151,7 +155,7 @@
           <div id="emotion-matrix" class="emotion-matrix" aria-live="polite"></div>
         </div>
         <div class="tab-panel" id="painel-modelo" role="tabpanel" aria-labelledby="tab-modelo">
-          <p>Conteúdo "Por modelo": liste os falantes/modelos disponíveis (ex.: <code>female-alc-dub</code>, <code>male-alc-dub-2</code>) e o que diferencia cada um.</p>
+          <p>Conteúdo "Por modelo": liste as pastas/modelos disponíveis (ex.: <code>female-alc-dub</code>, <code>male-alc-dub-2</code>) e o que diferencia cada um.</p>
         </div>
       </div>
 
@@ -194,7 +198,7 @@
               card.className = 'audio-card';
               const label = document.createElement('span');
               label.className = 'fn';
-              label.textContent = `${filename}`;
+              label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
               const audio = document.createElement('audio');
               audio.controls = true;
               audio.src = `${base}/${filename}`;
