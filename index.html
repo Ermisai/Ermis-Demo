@@ -91,8 +91,6 @@
         A pilha foi otimizada para baixa latência, alto paralelismo e fácil implantação em servidores ou notebooks, mantendo qualidade natural e alta similaridade com a voz alvo. As amostras abaixo ilustram organização por voz, por emoção e por modelo.
       </p>
 
-      <h3>System architecture:</h3>
-      <center><p><img src="resources/yourtts.png" width="560" alt="YourTTS architecture"></p></center>
 
       <h2>Amostras Ermis-TTS</h2>
 
@@ -297,7 +295,7 @@
               card.className = 'audio-card';
               const label = document.createElement('span');
               label.className = 'fn';
-              label.textContent = filename;
+              label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
               const audio = document.createElement('audio');
               audio.controls = true;
               audio.preload = 'none';
