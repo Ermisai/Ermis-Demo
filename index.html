@@ -64,17 +64,18 @@
       .main-title { position: relative; z-index: 2; display: grid; place-items: center; padding: 56px 16px; text-align: center; }
       .project-name a { color: white; text-decoration: none; }
       .project-tagline { color: #c7d2fe; font-weight: 600; }
-.model-voice { 
-        margin: 8px 0 0; 
-        padding: 14px 18px; 
-        background: #f1f5f9;
-        border-top: 1px solid #e5e7eb;
-        font-weight: 700;
-        color: #0f172a;
-        cursor: pointer;
-        list-style: none;
-        transition: background 0.2s ease;
+      .model-voice { 
+              margin: 8px 0 0; 
+              padding: 14px 18px; 
+              background: #f1f5f9;
+              border-top: 1px solid #e5e7eb;
+              font-weight: 700;
+              color: #0f172a;
+              cursor: pointer;
+              list-style: none;
+              transition: background 0.2s ease;
       }
+
       .model-voice:hover {
         background: #e2e8f0;
       }
@@ -124,6 +125,25 @@
         border-radius: 8px;
         border-left: 3px solid var(--tab-accent);
       }
+      .chips {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+      }
+      .chip {
+        display: inline-block;
+        font-size: .75rem;
+        font-weight: 700;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #e5e7eb;
+        background: #f8fafc;
+        color: #0f172a;
+      }
+      .chip-group { border-color: #dcfce7; background: #f0fdf4; }       /* Grupo: Impact / Sad / Mid-Long */
+      .chip-cap   { border-color: #73c8f6; background: #eff6ff; }   
     </style>
   </head>
   <body>
@@ -154,9 +174,8 @@
 
       <h2>Amostras Ermis-TTS</h2>
 
-      <p>
-        Abaixo estão demos geradas pelo pipeline da <b>Ermis</b>, organizadas em três abas: <b>Por voz</b> (pastas/vozes), <b>Por emoção</b> (matriz Voz × Emoção) e <b>Por modelo</b> (estrutura técnica). Os nomes de arquivos seguem o padrão <code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code> e <code>pt_mid_long_#.wav</code> para facilitar comparação.
-      </p>
+      <p><em>Importante:</em> nas abas <b>Por emoção</b> e <b>Por voz com texto</b>, o termo <b>“emoção”</b> refere-se somente ao <u>conteúdo do texto</u> (legenda) exibido — frases que evocam raiva, tristeza, medo etc. O áudio continua sendo a mesma voz/modelo; <b>não</b> aplicamos controle prosódico/estilo adicional nessas abas. Quando houver amostras com estilo de síntese (por exemplo, <code>Impact</code> ou <code>Sad</code>), isso aparecerá explicitamente no nome da pasta/arquivo (<code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code>).</p>
+
 
       <div class="tabs" role="tablist" aria-label="Amostras organizadas">
         <div class="tab-header">
@@ -397,6 +416,38 @@
   .ref-audio audio { width: 320px; max-width: 100%; }
 </style>
 
+<style>
+  /* opcional: deixa o bloco do áudio de referência bonitinho */
+  .ref-audio {
+    display:flex; align-items:center; gap:10px;
+    margin: 6px 0 14px;
+    padding:10px; border:1px solid #e5e7eb; border-radius:10px; background:#ffffff;
+    font-weight:600; color:#0f172a;
+  }
+  .ref-audio audio { width: 320px; max-width: 100%; }
+
+  /* Chips de metadados (grupo e emoção do texto) */
+  .chips {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+  .chip {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #f8fafc;
+    color: #0f172a;
+  }
+  .chip-group { border-color: #dcfce7; background: #f0fdf4; }  /* Grupo: Impact / Sad / Mid-Long */
+  .chip-cap   { border-color: #bae6fd; background: #eff6ff; }  /* Emoção do texto: Raiva / Emoção / Medo / Mid-Long (texto) */
+</style>
+
 <script>
   // --- POR MODELO (com áudio de referência por voz + sequência de legendas) ---
   const MODEL_BASE_ROOT = 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2';
@@ -405,10 +456,10 @@
   const REF_BASE_ROOT = 'audios_demo/Ermis/audios_gerados_spark_tts/output1';
   // >>> Arquivos de referência por voz/pasta (TROQUE os nomes conforme os seus arquivos)
   const REF_VOICE_FILES = {
-    'female-alc-dub':  'example_female_dub_2.wav',   // Voz Feminina 01
+    'female-alc-dub':  'example_female_dub_2.wav',     // Voz Feminina 01
     'female-alc-dub-2':'example_female_dub_3_v2.wav',  // Voz Feminina 02
-    'male-alc-dub':    'example_male_dub.wav',     // Voz Masculina 01
-    'male-alc-dub-2':  'example_male_dub_2.wav'     // Voz Masculina 02
+    'male-alc-dub':    'example_male_dub.wav',         // Voz Masculina 01
+    'male-alc-dub-2':  'example_male_dub_2.wav'        // Voz Masculina 02
   };
 
   const CAPTIONS = {
@@ -494,29 +545,37 @@
 
   const DEFAULT_CAP_BY_GROUP = { 'Impact': 'raiva', 'Sad': 'emocao', 'Mid-Long': 'emocao' };
 
+  /* Rótulos amigáveis para exibir a emoção do texto */
+  const CAPTION_DISPLAY = {
+    raiva: 'Raiva',
+    emocao: 'Emoção',
+    medo: 'Medo',
+    portuguese_sentences_mid_long: 'Mid-Long (texto)'
+  };
+
   // Sequência por grupo (1-based) — edite à vontade:
   const MODEL_VOICES = [
     { folder: 'female-alc-dub', label: 'Voz Feminina 01',
       groups: [
-        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [1,5,12] },
-        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2,             cap: 'emocao', capSeq: [5,7,13] }
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2, cap: 'raiva',  capSeq: [1,5,12] },
+        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2, cap: 'emocao', capSeq: [5,7,13] }
       ]
     },
     { folder: 'female-alc-dub-2', label: 'Voz Feminina 02',
       groups: [
-        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [3,9,14] },
-        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2,             cap: 'emocao', capSeq: [1,4,13] }
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2, cap: 'raiva',  capSeq: [3,9,14] },
+        { label: 'Sad',     prefix: 'pt_sad_',      start: 0, end: 2, cap: 'emocao', capSeq: [1,4,13] }
       ]
     },
     { folder: 'male-alc-dub', label: 'Voz Masculina 01',
       groups: [
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 5,            cap: 'portuguese_sentences_mid_long',   capSeq: [2,6,5,13,15,17] },
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 5, cap: 'portuguese_sentences_mid_long', capSeq: [2,6,5,13,15,17] },
       ]
     },
     { folder: 'male-alc-dub-2', label: 'Voz Masculina 02',
       groups: [
-        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2,             cap: 'raiva',  capSeq: [1,3,4] },
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2,            cap: 'portuguese_sentences_mid_long',   capSeq: [2,4,21] },
+        { label: 'Impact',  prefix: 'pt_impact_',   start: 0, end: 2, cap: 'raiva',  capSeq: [1,3,4] },
+        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2, cap: 'portuguese_sentences_mid_long', capSeq: [2,4,21] },
       ]
     }
   ];
@@ -545,7 +604,7 @@
     return nextCaption(capKey);
   }
 
-  // === AJUSTE: agora cada voz vira <details><summary> ... </summary><div class="model-content">...</div></details>
+  // === AJUSTE: cada cartão mostra também o "grupo" e a "emoção do texto"
   function buildModelPanel() {
     const wrap = document.getElementById('modelo-wrap');
     if (!wrap) return;
@@ -587,26 +646,44 @@
         content.appendChild(ref);
       }
 
-      // Grid de cartões (áudio + legenda)
+      // Grid de cartões (áudio + chips + legenda)
       const grid = document.createElement('div');
       grid.className = 'model-grid';
 
       v.groups.forEach(g => {
         const capKey = g.cap || DEFAULT_CAP_BY_GROUP[g.label] || 'emocao';
+        const capLabel = CAPTION_DISPLAY[capKey] || capKey;
+
         for (let i = g.start; i <= g.end; i++) {
           const filename = `${g.prefix}${i}.wav`;
 
           const card = document.createElement('div');
           card.className = 'model-card';
 
+          // Chips de metadados
+          const chips = document.createElement('div');
+          chips.className = 'chips';
+
+          const chipGroup = document.createElement('span');
+          chipGroup.className = 'chip chip-group';
+          chipGroup.textContent = g.label; // Impact / Sad / Mid-Long
+
+
+          chips.appendChild(chipGroup);
+         
+
+          // Player de áudio
           const audio = document.createElement('audio');
           audio.controls = true;
           audio.preload = 'none';
           audio.src = `${MODEL_BASE_ROOT}/${v.folder}/output/${filename}`;
 
+          // Legenda (frase) escolhida
           const line = document.createElement('p');
           line.textContent = getCaptionFor(capKey, g, i);
 
+          // Monta o cartão
+          card.appendChild(chips);
           card.appendChild(audio);
           card.appendChild(line);
           grid.appendChild(card);
@@ -627,6 +704,7 @@
   tabModeloBtn.addEventListener('click', ensureModelBuild);
   if (painelModelo.classList.contains('active')) ensureModelBuild();
 </script>
+
     <script src="js/animheader.js"></script>
   </body>
 </html>
