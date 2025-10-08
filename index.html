@@ -160,10 +160,10 @@
       <!-- Links removidos/ocultos enquanto ajustamos para Ermis -->
 
       <br><br>
-      <div style="text-align: center;">
+      <!-- <div style="text-align: center;">
         <h2>Ermis TTS: The best TTS for everyone</h2>
         <p><b>Edresson Casanova, Julian Weber, Christopher Shulby, Arnaldo Candido Junior, Eren Gölge e Moacir Antonelli Ponti</b></p>
-      </div>
+      </div> -->
 
       <h3>Descrição</h3>
       <p>
@@ -179,11 +179,12 @@
 
       <div class="tabs" role="tablist" aria-label="Amostras organizadas">
         <div class="tab-header">
-          <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-voz" id="tab-voz">Por voz</button>
+          <!-- Ajuste: padrão agora é "Por voz com texto" -->
+          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-voz" id="tab-voz">Por voz</button>
           <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-emocao" id="tab-emocao">Por emoção</button>
-          <button class="tab-btn" role="tab" aria-selected="false" aria-controls="painel-modelo" id="tab-modelo">Por voz com texto</button>
+          <button class="tab-btn" role="tab" aria-selected="true" aria-controls="painel-modelo" id="tab-modelo">Por voz com texto</button>
         </div>
-        <div class="tab-panel active" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
+        <div class="tab-panel" id="painel-voz" role="tabpanel" aria-labelledby="tab-voz">
           <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
 
           <details class="audio-folder" open>
@@ -229,20 +230,20 @@
           </div>
           <div id="emotion-matrix" class="emotion-matrix" aria-live="polite"></div>
         </div>
-        <div class="tab-panel" id="painel-modelo" role="tabpanel" aria-labelledby="tab-modelo">
+        <div class="tab-panel active" id="painel-modelo" role="tabpanel" aria-labelledby="tab-modelo">
           <div id="modelo-wrap"></div>
         </div>
 
       </div>
 
-      <footer class="site-footer">
-        <a href="https://coqui.ai/" title="Coqui AI" target="_blank"><img src="img/coqui.png" border="0" height="40" alt="Coqui AI"></a>
-        <a href="http://www.defined.ai/" title="Defined.ai" target="_blank"><img src="img/df.jpeg" border="0" height="50" alt="Defined.ai"></a>
-        <a href="http://www.deeplearningbrasil.com.br/" title="Deep Learning Brasil" target="_blank"><img src="img/dlb.png" border="0" height="50" alt="Deep Learning Brasil"></a>
-        <a href="http://icmc.usp.br/" title="Institute of Mathematics and Computer Science (ICMC)" target="_blank"><img src="img/icmc.png" border="0" height="55" alt="ICMC"></a>
-        <a href="https://www.soprabanking.com/" title="Sopra Banking Software" target="_blank"><img src="img/sbs.png" border="0" height="38" alt="Sopra Banking Software"></a>
+      <!-- <footer class="site-footer">
+        <a href="https://coqui.ai/" title="Coqui AI" target="blank"><img src="img/coqui.png" border="0" height="40" alt="Coqui AI"></a>
+        <a href="http://www.defined.ai/" title="Defined.ai" target="blank"><img src="img/df.jpeg" border="0" height="50" alt="Defined.ai"></a>
+        <a href="http://www.deeplearningbrasil.com.br/" title="Deep Learning Brasil" target="blank"><img src="img/dlb.png" border="0" height="50" alt="Deep Learning Brasil"></a>
+        <a href="http://icmc.usp.br/" title="Institute of Mathematics and Computer Science (ICMC)" target="blank"><img src="img/icmc.png" border="0" height="55" alt="ICMC"></a>
+        <a href="https://www.soprabanking.com/" title="Sopra Banking Software" target="blank"><img src="img/sbs.png" border="0" height="38" alt="Sopra Banking Software"></a>
         <div class="cleaner"></div>
-      </footer>
+      </footer> -->
     </section>
 
     <script>
