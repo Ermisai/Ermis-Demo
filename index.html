@@ -38,24 +38,10 @@
       .audio-card .fn { display: block; font-size: .85rem; opacity: .85; margin-bottom: 6px; word-break: break-all; }
       .audio-card audio { width: 100%; }
 
-      /* Emoção: layout em 2 colunas (Voz | Emoção) */
+      /* Emoção: controles e largura total */
       .emotion-controls { display:flex; align-items:center; gap:10px; padding: 0 0 16px 0; }
       .emotion-select { background:#ffffff; color:#0f172a; border:1px solid #e5e7eb; border-radius:8px; padding:8px 10px; }
-      .emotion-matrix { display: grid; grid-template-columns: 220px 1fr 1fr; gap: 12px; align-items: start; }
-      .emotion-row { display: contents; }
-      .col-voice { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; color:#0f172a; font-weight:700; }
-      .col-emotion { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
-      .col-head { background:#f8fafc; border:1px solid #e5e7eb; border-radius:10px; padding:10px 14px; font-weight:800; color:#0f172a; }
-      .emotion-group { border:1px solid #e5e7eb; border-radius:10px; margin:8px 0; padding:10px; }
-      .emotion-group h4 { margin:0 0 8px 0; color:#0f172a; }
-      .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
-      .placeholder { opacity:.5; text-align:center; padding:12px; }
-      .emotion-row { display: contents; }
-      .col-voice { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:12px 14px; color:#0f172a; font-weight:700; }
-      .col-emotion { background:#ffffff; border:1px solid #e5e7eb; border-radius:10px; padding:10px; }
-      .emotion-group { border:1px solid #e5e7eb; border-radius:10px; margin:8px 0; padding:10px; }
-      .emotion-group h4 { margin:0 0 8px 0; color:#0f172a; }
-      .emotion-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap:10px; }
+      .emotion-matrix { display: block; width: 100%; }
 
       /* Header small fixes so it still looks ok */
       #page-header { position: relative; min-height: 220px; color: white; overflow: hidden; }
@@ -144,6 +130,23 @@
       }
       .chip-group { border-color: #dcfce7; background: #f0fdf4; }       /* Grupo: Impact / Sad / Mid-Long */
       .chip-cap   { border-color: #73c8f6; background: #eff6ff; }   
+
+      /* Painel de voz (Por emoção) seguindo o estilo de "Por modelo" */
+      .voice-panel {
+        background:#ffffff;
+        border:1px solid #e5e7eb;
+        border-radius:12px;
+        padding:14px;
+        margin:12px 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      }
+      .filename { 
+        display:block; 
+        font-size:.78rem; 
+        color:#64748b; 
+        margin-top:6px; 
+        word-break: break-all; 
+      }
     </style>
   </head>
   <body>
@@ -187,12 +190,12 @@
           <p>Prévia por voz, separados por pasta. Expanda uma pasta para ver os áudios.</p>
 
           <details class="audio-folder" open>
-            <summary>Voz Feminina 01<span>— Impact & Sad</span></summary>
+            <summary>Voz Feminina 01<span>— Impact &amp; Sad</span></summary>
             <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/female-alc-dub/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":2},{"label":"Sad","prefix":"pt_sad_","start":0,"end":2}]'></div>
           </details>
 
           <details class="audio-folder">
-            <summary>Voz Feminina 02<span>— Impact & Sad</span></summary>
+            <summary>Voz Feminina 02<span>— Impact &amp; Sad</span></summary>
             <div class="audio-grid" data-base="audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2/female-alc-dub-2/output" data-groups='[{"label":"Impact","prefix":"pt_impact_","start":0,"end":2},{"label":"Sad","prefix":"pt_sad_","start":0,"end":2}]'></div>
           </details>
 
@@ -218,7 +221,7 @@
         </div>
         <div class="tab-panel" id="painel-emocao" role="tabpanel" aria-labelledby="tab-emocao">
           <div class="emotion-controls">
-            <label for="sel-pasta">Escolher pasta:</label>
+            <label for="sel-pasta">Dataset:</label>
             <select id="sel-pasta" class="emotion-select">
               <option value="ALL">Todas</option>
               <option value="female-alc-dub">Voz Feminina 01</option>
@@ -299,94 +302,267 @@
 </script>
 
 
-   <script>
+<script>
   // --- POR EMOÇÃO ---
-  const VOICE_LABELS = {
-    'female-alc-dub':   'Voz Feminina 01',
-    'female-alc-dub-2': 'Voz Feminina 02',
-    'male-alc-dub':     'Voz Masculina 01',
-    'male-alc-dub-2':   'Voz Masculina 02'
+  const EMOTION_LABELS = {
+    'angry': 'Raiva',
+    'fear': 'Medo',
+    'happy': 'Felicidade',
+    'sad': 'Tristeza',
+    'surprise': 'Surpresa',
+    'neutral': 'Neutro'
   };
+  const EMOTION_ORDER = ['angry','fear','happy','sad','surprise','neutral'];
 
-  const EMOTION_CONFIG = {
-    baseRoot: 'audios_demo/Ermis/audios_gerados_spark_tts/output-enhanced-48khzv2',
-    folders: {
-      'female-alc-dub': [
-        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2 },
-        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 }
-      ],
-      'female-alc-dub-2': [
-        { label: 'Impact', prefix: 'pt_impact_', start: 0, end: 2 },
-        { label: 'Sad',    prefix: 'pt_sad_',    start: 0, end: 2 }
-      ],
-      'male-alc-dub-2': [
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 2 },
-        { label: 'Impact',   prefix: 'pt_impact_',   start: 0, end: 2 }
-      ],
-      'male-alc-dub': [
-        { label: 'Mid-Long', prefix: 'pt_mid_long_', start: 0, end: 5 }
-      ]
+  // Configuração dos datasets baseada na estrutura de pastas existente
+  const DATASETS = {
+    Dublagem: {
+      base: 'audios_demo/emocao/dublagem',
+      genders: {
+        female: {
+          displayPrefix: 'feminino',
+          byEmotion: {
+            angry: [
+              { id: '50', groupId: 50, refFile: '9075656efc.wav', samples: ['angry_50-0.wav','angry_50-5.wav','angry_50-6.wav'] },
+              { id: '56', groupId: 56, refFile: '227e980cda.wav', samples: ['angry_56-2.wav','angry_56-3.wav','angry_56-8.wav'] }
+            ],
+            fear: [
+              { id: '27', groupId: 27, refFile: '93d53c3da4.wav', samples: ['fear_27-5.wav','fear_27-7.wav','fear_27-8.wav'] },
+              { id: '53', groupId: 53, refFile: 'd724b914b9.wav', samples: ['fear_53-5.wav','fear_53-7.wav','fear_53-8.wav'] }
+            ],
+            happy: [
+              { id: '38', groupId: 38, refFile: '7bb653bf39.wav', samples: ['happy_38-2.wav','happy_38-5.wav','happy_38-9.wav'] },
+              { id: '48', groupId: 48, refFile: '80cab7dda5.wav', samples: ['happy_48-5.wav','happy_48-6.wav','happy_48-8.wav'] },
+              { id: '49', groupId: 49, refFile: '49194a6615.wav', samples: ['happy_49-4.wav','happy_49-5.wav','happy_49-9.wav'] }
+            ],
+            sad: [
+              { id: '40', groupId: 40, refFile: 'f7342f70e4.wav', samples: ['sad_40-0.wav','sad_40-7.wav','sad_40-9.wav'] },
+              // { id: '43', groupId: 43, refFile: 'c287ad9214.wav', samples: ['sad_43-0.wav','sad_43-1.wav','sad_43-2.wav','sad_43-3.wav','sad_43-4.wav','sad_43-5.wav','sad_43-6.wav','sad_43-7.wav','sad_43-8.wav','sad_43-9.wav'] },
+              { id: '51', groupId: 51, refFile: 'f9fc95197b.wav', samples: ['sad_51-3.wav','sad_51-4.wav','sad_51-7.wav'] },
+              { id: '52', groupId: 52, refFile: '4296e717f5.wav', samples: ['sad_52-6.wav','sad_52-7.wav','sad_52-8.wav'] }
+            ],
+            surprise: [
+              { id: '26', groupId: 26, refFile: 'ffb08db167.wav', samples: ['surprise_26-4.wav','surprise_26-8.wav','surprise_26-9.wav'] },
+              { id: '36', groupId: 36, refFile: '592cd7c510.wav', samples: ['surprise_36-2.wav','surprise_36-7.wav','surprise_36-9.wav'] },
+              { id: '37', groupId: 37, refFile: 'c6e50e472f.wav', samples: ['surprise_37-2.wav','surprise_37-7.wav','surprise_37-9.wav'] }
+            ]
+          }
+        },
+        male: {
+          displayPrefix: 'masculino',
+          byEmotion: {
+            angry: [
+              { id: '0', groupId: 0, refFile: '2934e86276.wav', samples: ['angry_0-0.wav','angry_0-4.wav','angry_0-6.wav'] },
+              { id: '1', groupId: 1, refFile: '8bef5fe262.wav', samples: ['angry_1-1.wav','angry_1-2.wav','angry_1-3.wav'] },
+              { id: '3', groupId: 3, refFile: 'f86b21b285.wav', samples: ['angry_3-6.wav','angry_3-7.wav','angry_3-8.wav'] },
+              
+            ],
+            fear: [
+              { id: '4', groupId: 4, refFile: '5f40613cc9.wav', samples: ['fear_4-1.wav','fear_4-5.wav','fear_4-9.wav'] },
+              { id: '15', groupId: 15, refFile: '3c0d3ba72c.wav', samples: ['fear_15-1.wav','fear_15-4.wav','fear_15-6.wav'] }
+            ],
+            happy: [
+              { id: '2', groupId: 2, refFile: null, samples: ['happy_2-4.wav','happy_2-8.wav','happy_2-9.wav'] },
+              { id: '16', groupId: 16, refFile: '515937ef07.wav', samples: ['happy_16-2.wav','happy_16-4.wav','happy_16-9.wav'] }
+            ]
+          }
+        }
+      }
+    },
+    EmoUERJ: {
+      base: 'audios_demo/emocao/EmoUERJ',
+      genders: {
+        masculino: {
+          displayPrefix: 'masculino',
+          byEmotion: {
+            angry: [
+              { id: 'ator1', actor:'ator1', refFile: '0023_4.wav', samples: ['angry_91-4.wav','angry_91-6.wav'] },
+              { id: 'ator2', actor:'ator2', refFile: '0146_5.wav', samples: ['angry_85-3.wav','angry_85-5.wav','angry_85-6.wav'] },
+              { id: 'ator3', actor:'ator3', refFile: '0088_0.wav', samples: ['angry_92-1.wav','angry_92-4.wav','angry_92-5.wav'] }
+            ],
+            happy: [
+              { id: 'ator1', actor:'ator1', refFile: '0153_5.wav', samples: ['happy_59-4.wav','happy_59-6.wav','happy_59-9.wav'] }
+            ],
+            neutral: [
+              { id: 'ator1', actor:'ator1', refFile: '0206_2.wav', samples: ['neutral_69-2.wav','neutral_69-4.wav','neutral_69-5.wav'] },
+              { id: 'ator2', actor:'ator2', refFile: '0182_5.wav', samples: ['neutral_70-3.wav','neutral_70-6.wav','neutral_70-7.wav'] },
+              { id: 'ator3', actor:'ator3', refFile: '0173_5.wav', samples: ['neutral_68-1.wav','neutral_68-5.wav','neutral_68-7.wav'] }
+            ],
+            sad: [
+              { id: 'ator1', actor:'ator1', refFile: '0053_0.wav', samples: ['sad_75-5.wav','sad_75-6.wav','sad_75-7.wav'] },
+              { id: 'ator2', actor:'ator2', refFile: null, samples: ['sad_76-6.wav','sad_76-7.wav','sad_76-9.wav'] },
+              { id: 'ator3', actor:'ator3', refFile: '0050_0.wav', samples: ['sad_77-2.wav','sad_77-4.wav','sad_77-6.wav'] },
+              { id: 'ator4', actor:'ator4', refFile: null, samples: ['sad_80-1.wav','sad_80-4.wav','sad_80-9.wav'] }
+            ]
+          }
+        },
+        feminino: {
+          displayPrefix: 'feminino',
+          byEmotion: {
+            angry: [
+              { id: 'ator1', actor:'ator1', refFile: null, samples: ['angry_98-4.wav'] }
+            ],
+            happy: [
+              { id: 'ator1', actor:'ator1', refFile: '0343_7.wav', samples: ['happy_64-0.wav','happy_64-2.wav','happy_64-8.wav'] }
+            ],
+            neutral: [
+              { id: 'ator1', actor:'ator1', refFile: '0322_3.wav', samples: ['neutral_71-4.wav','neutral_71-6.wav','neutral_71-8.wav'] }
+            ],
+            sad: [
+              { id: 'ator1', actor:'ator1', refFile: '0090_6.wav', samples: ['sad_83-0.wav','sad_83-2.wav','sad_83-6.wav'] }
+            ]
+          }
+        }
+      }
     }
   };
 
-  function buildEmotionMatrix(selection = 'ALL') {
+  function ensureEmotionSelectorOptions() {
+    const sel = document.getElementById('sel-pasta');
+    if (!sel || sel.dataset.inited === '1') return;
+    sel.innerHTML = '';
+    const optAll = document.createElement('option');
+    optAll.value = 'ALL';
+    optAll.textContent = 'Todos';
+    sel.appendChild(optAll);
+    Object.keys(DATASETS).forEach(ds => {
+      const opt = document.createElement('option');
+      opt.value = ds;
+      opt.textContent = ds;
+      sel.appendChild(opt);
+    });
+    sel.dataset.inited = '1';
+  }
+
+  function buildEmotionMatrix(selectedDataset = 'ALL') {
     const container = document.getElementById('emotion-matrix');
     container.innerHTML = '';
 
-    // Cabeçalho
-    const headVoice = document.createElement('div');
-    headVoice.className = 'col-voice col-head';
-    headVoice.textContent = 'Voz';
-    const headE1 = document.createElement('div');
-    headE1.className = 'col-emotion col-head';
-    headE1.textContent = 'Emoção 1';
-    const headE2 = document.createElement('div');
-    headE2.className = 'col-emotion col-head';
-    headE2.textContent = 'Emoção 2';
-    container.appendChild(headVoice);
-    container.appendChild(headE1);
-    container.appendChild(headE2);
+    const datasetsToShow = selectedDataset === 'ALL' ? Object.keys(DATASETS) : [selectedDataset];
 
-    const folders = Object.keys(EMOTION_CONFIG.folders);
-    const chosen = selection === 'ALL' ? folders : [selection];
+    const voiceNumberMap = {}; // {dataset:{gender:{id:num}}}
+    const voiceCounters = {}; // {dataset:{gender:count}}
 
-    chosen.forEach(folder => {
-      const groups = EMOTION_CONFIG.folders[folder] || [];
+    function getVoiceNumber(datasetName, gender, uniqueId) {
+      voiceNumberMap[datasetName] ||= {};
+      voiceCounters[datasetName] ||= {};
+      voiceNumberMap[datasetName][gender] ||= {};
+      voiceCounters[datasetName][gender] ||= 5;
+      if (!(uniqueId in voiceNumberMap[datasetName][gender])) {
+        const n = voiceCounters[datasetName][gender];
+        voiceNumberMap[datasetName][gender][uniqueId] = n;
+        voiceCounters[datasetName][gender] = n + 1;
+      }
+      return voiceNumberMap[datasetName][gender][uniqueId];
+    }
 
-      // Coluna 1: Voz
-      const voiceCell = document.createElement('div');
-      voiceCell.className = 'col-voice';
-      voiceCell.textContent = VOICE_LABELS[folder] || folder;
+    datasetsToShow.forEach(dsName => {
+      const ds = DATASETS[dsName];
+      if (!ds) return;
 
-      // Colunas 2 e 3: Emoções
-      const em1 = document.createElement('div'); em1.className = 'col-emotion';
-      const em2 = document.createElement('div'); em2.className = 'col-emotion';
+      // Dataset como bloco "model-voice" para manter consistência visual
+      const dsDetails = document.createElement('details');
+      dsDetails.className = 'model-voice';
+      dsDetails.setAttribute('open','');
+      const dsSummary = document.createElement('summary');
+      dsSummary.textContent = dsName;
+      dsDetails.appendChild(dsSummary);
 
-      const fillEmotion = (cell, group) => {
-        if (!group) { cell.innerHTML = '<div class="placeholder">—</div>'; return; }
-        const wrap = document.createElement('div');
-        wrap.className = 'emotion-group';
-        const h = document.createElement('h4'); h.textContent = group.label;
-        const grid = document.createElement('div'); grid.className = 'emotion-grid';
+      const dsContent = document.createElement('div');
+      dsContent.className = 'model-content';
 
-        for (let i = group.start; i <= group.end; i++) {
-          const filename = `${group.prefix}${i}.wav`;
-          const card = document.createElement('div'); card.className = 'audio-card';
-          const label = document.createElement('span'); label.className = 'fn';
-          label.textContent = (group.label ? String(group.label).toLowerCase() : 'audio');
-          const audio = document.createElement('audio'); audio.controls = true; audio.preload = 'none';
-          audio.src = `${EMOTION_CONFIG.baseRoot}/${folder}/output/${filename}`;
-          card.appendChild(label); card.appendChild(audio); grid.appendChild(card);
-        }
-        wrap.appendChild(h); wrap.appendChild(grid); cell.appendChild(wrap);
-      };
+      EMOTION_ORDER.forEach(em => {
+        const gendersKeys = Object.keys(ds.genders);
+        const hasVoices = gendersKeys.some(g => (ds.genders[g].byEmotion[em] || []).length);
+        if (!hasVoices) return;
 
-      fillEmotion(em1, groups[0]);
-      fillEmotion(em2, groups[1]);
+        // Emoção como sub-bloco colapsável no mesmo estilo
+        const emoDetails = document.createElement('details');
+        emoDetails.className = 'model-voice';
+        emoDetails.setAttribute('open','');
+        const emoSummary = document.createElement('summary');
+        emoSummary.textContent = EMOTION_LABELS[em] || em;
+        emoDetails.appendChild(emoSummary);
 
-      container.appendChild(voiceCell);
-      container.appendChild(em1);
-      container.appendChild(em2);
+        const emoContent = document.createElement('div');
+        emoContent.className = 'model-content';
+
+        gendersKeys.forEach(gender => {
+          const genderCfg = ds.genders[gender];
+          const voiceList = genderCfg.byEmotion[em] || [];
+          voiceList.forEach(v => {
+            const voiceNum = getVoiceNumber(dsName, gender, v.id);
+            const voiceName = `${genderCfg.displayPrefix} ${voiceNum}`;
+
+            // Painel de voz no estilo do "Por modelo"
+            const panel = document.createElement('div');
+            panel.className = 'voice-panel';
+
+            // Cabeçalho com chips de contexto
+            const chips = document.createElement('div');
+            chips.className = 'chips';
+            const chipDs = document.createElement('span'); chipDs.className = 'chip'; chipDs.textContent = dsName;
+            const chipEm = document.createElement('span'); chipEm.className = 'chip chip-cap'; chipEm.textContent = EMOTION_LABELS[em] || em;
+            const chipGen = document.createElement('span'); chipGen.className = 'chip'; chipGen.textContent = genderCfg.displayPrefix;
+            const chipVoice = document.createElement('span'); chipVoice.className = 'chip'; chipVoice.textContent = voiceName;
+            chips.appendChild(chipDs);
+            chips.appendChild(chipEm);
+            chips.appendChild(chipGen);
+            chips.appendChild(chipVoice);
+            panel.appendChild(chips);
+
+            // Áudio de referência (quando existir)
+            if (v.refFile) {
+              const refContainer = document.createElement('div');
+              refContainer.className = 'ref-audio';
+              const refAudio = document.createElement('audio');
+              refAudio.controls = true;
+              refAudio.preload = 'none';
+              if (dsName === 'Dublagem') {
+                refAudio.src = `${ds.base}/${gender}/${em}/${v.groupId}/referencia/${v.refFile}`;
+              } else if (dsName === 'EmoUERJ') {
+                refAudio.src = `${ds.base}/${em}/${gender}/${v.actor}/referencia/${v.refFile}`;
+              }
+              const refLabel = document.createElement('span');
+              refLabel.textContent = 'Áudio de referência';
+              refContainer.appendChild(refAudio);
+              refContainer.appendChild(refLabel);
+              panel.appendChild(refContainer);
+            }
+
+            // Grid de amostras no estilo "model-grid" + "model-card"
+            const samplesGrid = document.createElement('div');
+            samplesGrid.className = 'model-grid';
+            (v.samples || []).forEach(fn => {
+              const card = document.createElement('div');
+              card.className = 'model-card';
+              const audio = document.createElement('audio');
+              audio.controls = true;
+              audio.preload = 'none';
+              if (dsName === 'Dublagem') {
+                audio.src = `${ds.base}/${gender}/${em}/${v.groupId}/${fn}`;
+              } else if (dsName === 'EmoUERJ') {
+                audio.src = `${ds.base}/${em}/${gender}/${v.actor}/${fn}`;
+              }
+              const label = document.createElement('span');
+              label.className = 'filename';
+              label.textContent = fn;
+              card.appendChild(audio);
+              card.appendChild(label);
+              samplesGrid.appendChild(card);
+            });
+            panel.appendChild(samplesGrid);
+
+            emoContent.appendChild(panel);
+          });
+        });
+
+        emoDetails.appendChild(emoContent);
+        dsContent.appendChild(emoDetails);
+      });
+
+      dsDetails.appendChild(dsContent);
+      container.appendChild(dsDetails);
     });
   }
 
@@ -395,14 +571,15 @@
   const painelEmocao = document.getElementById('painel-emocao');
   let emotionBuilt = false;
   function ensureEmotionBuild() {
+    ensureEmotionSelectorOptions();
     if (!emotionBuilt) {
-      buildEmotionMatrix(selPasta.value);
+      buildEmotionMatrix(selPasta.value || 'ALL');
       emotionBuilt = true;
     }
   }
   document.getElementById('tab-emocao').addEventListener('click', ensureEmotionBuild);
   if (painelEmocao.classList.contains('active')) ensureEmotionBuild();
-  selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
+  if (selPasta) selPasta.addEventListener('change', () => buildEmotionMatrix(selPasta.value));
 </script>
 
 <style>
@@ -414,38 +591,6 @@
     font-weight:600; color:#0f172a;
   }
   .ref-audio audio { width: 320px; max-width: 100%; }
-</style>
-
-<style>
-  /* opcional: deixa o bloco do áudio de referência bonitinho */
-  .ref-audio {
-    display:flex; align-items:center; gap:10px;
-    margin: 6px 0 14px;
-    padding:10px; border:1px solid #e5e7eb; border-radius:10px; background:#ffffff;
-    font-weight:600; color:#0f172a;
-  }
-  .ref-audio audio { width: 320px; max-width: 100%; }
-
-  /* Chips de metadados (grupo e emoção do texto) */
-  .chips {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-  }
-  .chip {
-    display: inline-block;
-    font-size: .75rem;
-    font-weight: 700;
-    padding: 4px 8px;
-    border-radius: 999px;
-    border: 1px solid #e5e7eb;
-    background: #f8fafc;
-    color: #0f172a;
-  }
-  .chip-group { border-color: #dcfce7; background: #f0fdf4; }  /* Grupo: Impact / Sad / Mid-Long */
-  .chip-cap   { border-color: #bae6fd; background: #eff6ff; }  /* Emoção do texto: Raiva / Emoção / Medo / Mid-Long (texto) */
 </style>
 
 <script>

@@ -1,0 +1,4 @@
+.procoder/internal_documentation.md
+.procoder/history.jsonl
+.env
+config.toml
