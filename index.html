@@ -5,7 +5,7 @@
     <title>Ermis TTS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="favicons/favicon.ico">
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
@@ -17,14 +17,16 @@
         --tab-text: #e2e8f0; /* slate-200 */
         --bd: #243041; /* border */
       }
-      body { font-family: "Open Sans", system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
+      body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial; }
 
       /* --- Tabs --- */
       .tabs { margin: 24px auto 0; max-width: 1400px; width: calc(100% - 32px); background: #ffffff; border: 1px solid #e5e7eb; border-radius: 14px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,.08); }
-      .tab-header { display: flex; flex-wrap: wrap; background: #f1f5f9; }
-      .tab-btn { appearance: none; background: transparent; color: #0f172a; padding: 14px 18px; font-weight: 700; border: 0; cursor: pointer; position: relative; }
+      .tab-header { display: flex; flex-wrap: wrap; background: #f1f5f9; border-bottom: 1px solid var(--border); }
+      .tab-btn { appearance: none; background: transparent; color: #0f172a; padding: 14px 18px; font-weight: 700; border: 0; cursor: pointer; position: relative; transition: background .2s ease; }
+      .tab-btn:hover { background: rgba(2,6,23,.04); }
+      [data-theme="dark"] .tab-btn:hover { background: rgba(255,255,255,.05); }
       .tab-btn[aria-selected="true"] { color: #0f172a; }
-      .tab-btn[aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; background: var(--tab-accent); border-radius: 3px 3px 0 0; }
+      .tab-btn[aria-selected="true"]::after { content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px; background: #3b82f6; border-radius: 3px 3px 0 0; }
       .tab-panel { display: none; padding: 22px; background: transparent; color: #0f172a; }
       .tab-panel.active { display: block; }
 
@@ -32,11 +34,11 @@
       .audio-folder { margin: 8px 0 0; border-top: 1px solid #e5e7eb; }
       .audio-folder summary { cursor: pointer; padding: 14px 18px; font-weight: 700; list-style: none; color: #0f172a; }
       .audio-folder summary::-webkit-details-marker { display: none; }
-      .audio-folder summary span { opacity: .9; font-weight: 600; font-size: .95rem; color: #334155; }
+      .audio-folder summary span { opacity: .9; font-weight: 600; font-size: .95rem; color: var(--muted); }
       .audio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; padding: 0 18px 18px; }
       .audio-card { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px; }
-      .audio-card .fn { display: block; font-size: .85rem; opacity: .85; margin-bottom: 6px; word-break: break-all; }
-      .audio-card audio { width: 100%; }
+      .audio-card .fn { display: block; font-size: .85rem; opacity: .85; margin-bottom: 6px; word-break: break-all; color: var(--muted); }
+      .audio-card audio { width: 100%; border-radius: 8px; }
 
       /* Emoção: controles e largura total */
       .emotion-controls { display:flex; align-items:center; gap:10px; padding: 0 0 16px 0; }
@@ -45,11 +47,11 @@
 
       /* Header small fixes so it still looks ok */
       #page-header { position: relative; min-height: 220px; color: white; overflow: hidden; }
-      #bg-header { position: absolute; inset: 0; background: radial-gradient(1200px 600px at 20% -10%, rgba(34,211,238,.25), transparent), radial-gradient(1000px 600px at 80% 0%, rgba(99,102,241,.25), transparent), linear-gradient(180deg, #0b1022 0%, #04070f 100%); }
-      #demo-canvas { position: absolute; inset: 0; }
+      #bg-header { position: absolute; inset: 0; z-index: 0; background: radial-gradient(1200px 600px at 20% -10%, rgba(34,211,238,.25), transparent), radial-gradient(1000px 600px at 80% 0%, rgba(99,102,241,.25), transparent), linear-gradient(180deg, #0b1022 0%, #04070f 100%); }
+      #demo-canvas { position: absolute; inset: 0; z-index: 1; }
       .main-title { position: relative; z-index: 2; display: grid; place-items: center; padding: 56px 16px; text-align: center; }
       .project-name a { color: white; text-decoration: none; }
-      .project-tagline { color: #c7d2fe; font-weight: 600; }
+      .project-tagline { color: #c7d2fe; font-weight: 600; text-shadow: 0 1px 2px rgba(0,0,0,.25); }
       .model-voice { 
               margin: 8px 0 0; 
               padding: 14px 18px; 
@@ -63,8 +65,9 @@
       }
 
       .model-voice:hover {
-        background: #e2e8f0;
+        background: rgba(2,6,23,.04);
       }
+      [data-theme="dark"] .model-voice:hover { background: rgba(255,255,255,.05); }
       .model-voice::-webkit-details-marker { display: none; }
       .model-voice span {
         opacity: .9;
@@ -129,7 +132,8 @@
         color: #0f172a;
       }
       .chip-group { border-color: #dcfce7; background: #f0fdf4; }       /* Grupo: Impact / Sad / Mid-Long */
-      .chip-cap   { border-color: #73c8f6; background: #eff6ff; }   
+      .chip-cap   { border-color: #73c8f6; background: #eff6ff; }
+      [data-theme="dark"] .chip-cap { border-color: #164e63; background: #082f49; }   
 
       /* Painel de voz (Por emoção) seguindo o estilo de "Por modelo" */
       .voice-panel {
@@ -148,11 +152,284 @@
         word-break: break-all; 
       }
     </style>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --text: #0f172a;
+        --muted: #475569;
+        --surface: #ffffff;
+        --border: #e5e7eb;
+        --accent: #22d3ee;
+      }
+      [data-theme="dark"] {
+        --bg: #0b1022;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --surface: #0f172a;
+        --border: #243041;
+        --accent: #22d3ee;
+        --code-bg: #0b1220;
+        --code-text: #cbd5e1;
+        --code-border: #1f2937;
+      }
+      :root { color-scheme: light; }
+      [data-theme="dark"] { color-scheme: dark; }
+      body { background: var(--bg); color: var(--text); }
+      a { color: var(--accent); }
+      a:hover { opacity: .9; }
+      .tabs { background: var(--surface); border-color: var(--border); }
+      .tab-header { background: var(--bg); }
+      .tab-btn { color: var(--text); }
+      .tab-panel { color: var(--text); }
+      .tab-btn[aria-selected="true"] { color: var(--text); }
+      .audio-card, .model-card, .voice-panel { background: var(--surface); border-color: var(--border); }
+      .chips .chip { background: var(--bg); border-color: var(--border); color: var(--text); }
+      .chip-group { border-color: #dcfce7; background: #f0fdf4; }
+      [data-theme="dark"] .chip-group { border-color: #166534; background: #052e16; }
+      .main-content h1, .main-content h2, .main-content h3, .main-content h4, .main-content h5, .main-content h6 { color: var(--text); }
+      .page-header .project-tagline { color: #c7d2fe; }
+      /* Overrides for components with hardcoded light colors */
+      .audio-folder { border-top-color: var(--border); }
+      .audio-folder summary { color: var(--text) !important; }
+      .emotion-select { background: var(--surface) !important; color: var(--text) !important; border-color: var(--border) !important; }
+      .model-voice { background: var(--bg) !important; color: var(--text) !important; border-top-color: var(--border) !important; }
+      .model-voice span { color: var(--muted) !important; }
+      /* Code / pre blocks themed */
+      .main-content code { color: var(--code-text); background-color: var(--code-bg); border-color: var(--code-border); }
+      .main-content pre, .main-content .highlight pre { background-color: var(--code-bg); border-color: var(--code-border); color: var(--code-text); }
+      .main-content pre code { color: var(--code-text); }
+      .model-voice summary { position: relative; }
+      .model-voice summary::after {
+        content: "▸";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform .2s ease;
+        opacity: .7;
+      }
+      .model-voice[open] summary::after {
+        transform: translateY(-50%) rotate(90deg);
+        opacity: 1;
+      }
+      /* Chevron também para pastas de áudio (Por voz) */
+      .audio-folder summary { position: relative; }
+      .audio-folder summary::after {
+        content: "▸";
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: transform .2s ease;
+        opacity: .6;
+      }
+      .audio-folder[open] summary::after { transform: translateY(-50%) rotate(90deg); opacity: .95; }
+      
+      .tab-btn:focus-visible, summary:focus-visible, select:focus-visible, .theme-toggle:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 8px;
+      }
+      .emotion-controls label { color: var(--muted); font-weight: 600; }
+      .chip { box-shadow: 0 1px 2px rgba(0,0,0,.06); }
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .model-card, .audio-card { animation: fadeUp .2s ease both; }
+      .audio-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-2px); }
+      .model-card p { background: var(--bg); color: var(--muted); }
+      .theme-toggle {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        z-index: 3;
+        appearance: none;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 999px;
+        padding: 8px 10px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0,0,0,.12);
+        transition: background .2s ease, transform .1s ease;
+      }
+      .theme-toggle:hover { transform: translateY(-1px); }
+      .main-content { color: var(--text); max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+      .main-content p { color: var(--muted); line-height: 1.75; margin: 0 0 1rem; }
+      .main-content h1 { font-size: clamp(1.8rem, 1.6rem + 1vw, 2.4rem); line-height: 1.25; margin: 1rem 0 .5rem; }
+      .main-content h2 { font-size: clamp(1.4rem, 1.3rem + .6vw, 1.8rem); margin-top: 24px; }
+      .main-content h3 { font-size: clamp(1.2rem, 1.1rem + .4vw, 1.4rem); margin-top: 18px; }
+      /* Destaque para títulos solicitados */
+      .section-title { font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.3rem); font-weight: 800; letter-spacing: -0.01em; }
+      #titulo-descricao { margin-top: 40px; }
+    </style>
+    <style>
+      /* Vibrant Phase 1 — foundation, subtle glow */
+      :root { --accent-2: #a78bfa; }
+      .tab-header { gap: 6px; padding: 8px; border-bottom-color: var(--border); }
+      .tab-btn { border-radius: 0; padding: 10px 16px; border: 0; }
+      .tab-btn[aria-selected="true"] { background: transparent; border-color: transparent; box-shadow: none; }
+      [data-theme="dark"] .tab-btn[aria-selected="true"] { background: transparent; border-color: transparent; box-shadow: none; }
+      .model-card, .voice-panel, .audio-card {
+        border-color: transparent;
+        box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(2,6,23,.06), 0 0 0 6px rgba(34,211,238,.05);
+      }
+      .model-card:hover, .voice-panel:hover, .audio-card:hover {
+        box-shadow: 0 2px 6px rgba(0,0,0,.08), 0 16px 36px rgba(2,6,23,.10), 0 0 0 6px rgba(34,211,238,.08);
+      }
+      .chip {
+        background: linear-gradient(90deg, rgba(34,211,238,.12), rgba(167,139,250,.12));
+        border-color: rgba(34,211,238,.25);
+      }
+      .chip-group {
+        background: linear-gradient(90deg, rgba(34,211,238,.18), rgba(167,139,250,.18));
+        border-color: rgba(34,211,238,.35);
+      }
+      .ref-audio { box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 0 0 6px rgba(34,211,238,.05); }
+      .theme-toggle { border-color: rgba(34,211,238,.35); box-shadow: 0 2px 10px rgba(0,0,0,.12), 0 0 0 6px rgba(34,211,238,.08); }
+    </style>
+    <style>
+      /* Vibrant Phase 2 — gradients, glass, aurora */
+      /* Aurora header overlays */
+      #bg-header::before, #bg-header::after {
+        content: "";
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(40px);
+        opacity: .35;
+        pointer-events: none;
+        will-change: transform;
+        mix-blend-mode: screen;
+        animation: drift 18s ease-in-out infinite;
+      }
+      #bg-header::before {
+        width: 520px; height: 520px;
+        left: -120px; top: -160px;
+        background: radial-gradient(closest-side, rgba(34,211,238,.35), transparent 70%),
+                    radial-gradient(closest-side, rgba(167,139,250,.30), transparent 70%);
+        animation-direction: alternate;
+      }
+      #bg-header::after {
+        width: 460px; height: 460px;
+        right: -120px; top: -80px;
+        background: radial-gradient(closest-side, rgba(99,102,241,.30), transparent 70%),
+                    radial-gradient(closest-side, rgba(34,211,238,.25), transparent 70%);
+        animation-direction: alternate-reverse;
+      }
+      @keyframes drift {
+        0%   { transform: translate3d(0,0,0) scale(1); }
+        50%  { transform: translate3d(0,-10px,0) scale(1.04); }
+        100% { transform: translate3d(0,0,0) scale(1); }
+      }
+
+      /* Glass + gradient border for tabs container */
+      .tabs {
+        border: 1px solid transparent;
+        background:
+          linear-gradient(var(--surface), var(--surface)) padding-box,
+          linear-gradient(120deg, rgba(34,211,238,.35), rgba(167,139,250,.35)) border-box;
+        box-shadow: 0 10px 30px rgba(0,0,0,.08), 0 0 0 8px rgba(34,211,238,.05);
+      }
+
+      /* Cards with subtle gradient borders */
+      .model-card, .voice-panel, .audio-card {
+        border: 1px solid transparent;
+        background:
+          linear-gradient(var(--surface), var(--surface)) padding-box,
+          linear-gradient(135deg, rgba(34,211,238,.35), rgba(167,139,250,.35)) border-box;
+      }
+
+      /* Sticky summaries inside Por emoção */
+      #painel-emocao details.model-voice > summary {
+        position: sticky;
+        top: 8px;
+        z-index: 2;
+        background: var(--surface);
+        border-radius: 10px;
+      }
+
+      /* Emotion color system — refined */
+      .emo-angry    { --emo: #ef4444; --emo-rgb: 239, 68, 68; }
+      .emo-fear     { --emo: #f59e0b; --emo-rgb: 245, 158, 11; }
+      .emo-happy    { --emo: #22c55e; --emo-rgb: 34, 197, 94; }
+      .emo-sad      { --emo: #3b82f6; --emo-rgb: 59, 130, 246; }
+      .emo-surprise { --emo: #ec4899; --emo-rgb: 236, 72, 153; }
+      .emo-neutral  { --emo: #64748b; --emo-rgb: 100, 116, 139; }
+
+      /* Emotion accents — lighter, elegant */
+      .voice-panel[class*="emo-"] { position: relative; overflow: hidden; }
+      .voice-panel[class*="emo-"]::before {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; top: 0; height: 6px;
+        background: linear-gradient(90deg, rgba(var(--emo-rgb), .55), rgba(var(--emo-rgb), .18));
+      }
+
+      /* Summary marker: small dot with soft halo */
+      details.model-voice[class*="emo-"] > summary { padding-left: 24px; }
+      details.model-voice[class*="emo-"] > summary::before {
+        content: "";
+        position: absolute;
+        left: 12px; top: 50%;
+        width: 8px; height: 8px;
+        transform: translateY(-50%);
+        border-radius: 999px;
+        background-color: var(--emo);
+        box-shadow: 0 0 0 3px rgba(var(--emo-rgb), .18);
+      }
+
+      /* Emotion chip tint inside voice panels */
+      .voice-panel[class*="emo-"] .chip-cap {
+        background: linear-gradient(90deg, rgba(var(--emo-rgb), .12), rgba(167,139,250, .10));
+        border-color: rgba(var(--emo-rgb), .35);
+      }
+
+      /* Scrollbar polish */
+      * { scrollbar-width: thin; scrollbar-color: rgba(148,163,184,.6) transparent; }
+      *::-webkit-scrollbar { height: 10px; width: 10px; }
+      *::-webkit-scrollbar-thumb { background: linear-gradient(180deg, rgba(34,211,238,.6), rgba(167,139,250,.6)); border-radius: 10px; }
+      *::-webkit-scrollbar-track { background: transparent; }
+
+      /* Header title subtle glow */
+      .project-name { text-shadow: 0 2px 20px rgba(34,211,238,.35); }
+    </style>
+
+    <style>
+      /* Vibrant Phase 3 — micro-interactions and refined accents */
+      .tab-btn {
+        transition: background .2s ease, transform .04s ease;
+      }
+      .tab-btn:hover { transform: translateY(-1px); }
+
+      .model-card, .voice-panel, .audio-card {
+        transition: transform .15s ease, box-shadow .2s ease;
+      }
+      .model-card:hover, .voice-panel:hover, .audio-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .chip-cap { box-shadow: 0 1px 3px rgba(0,0,0,.08), 0 0 0 4px rgba(34,211,238,.06); }
+      .ref-audio { border-left: 3px solid var(--accent); }
+
+      /* Dark theme refinements */
+      [data-theme="dark"] .tab-btn[aria-selected="true"]::after { background: #22d3ee; }
+      [data-theme="dark"] .main-content p { color: #cbd5e1; }
+      [data-theme="dark"] .tabs { box-shadow: 0 12px 40px rgba(0,0,0,.35), 0 0 0 8px rgba(34,211,238,.06); }
+      [data-theme="dark"] #bg-header::before, [data-theme="dark"] #bg-header::after { opacity: .45; }
+
+      /* Info card */
+      .info-card { border: 1px solid var(--border); background: var(--surface); border-radius: 12px; padding: 14px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(2,6,23,.06), 0 0 0 6px rgba(34,211,238,.05); }
+      .info-card h3 { margin: 0 0 8px; font-size: 1rem; color: var(--text); }
+      .info-card ul { margin: 0; padding-left: 18px; color: var(--muted); line-height: 1.7; }
+      [data-theme="dark"] .info-card { box-shadow: 0 2px 6px rgba(0,0,0,.28), 0 0 0 6px rgba(34,211,238,.08); border-color: rgba(34,211,238,.35); }
+    </style>
   </head>
   <body>
     <section id="page-header" class="page-header">
       <div id="bg-header"></div>
       <canvas id="demo-canvas"></canvas>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema" title="Alternar tema">🌙</button>
       <div class="main-title">
         <h1 class="project-name"><span><a href="index.html">Ermis TTS</a></span></h1>
         <h2 class="project-tagline">Síntese neural multilíngue com clonagem de voz e controle de emoção</h2>
@@ -167,16 +444,26 @@
         <p><b>Edresson Casanova, Julian Weber, Christopher Shulby, Arnaldo Candido Junior, Eren Gölge e Moacir Antonelli Ponti</b></p>
       </div> -->
 
-      <h2>Descrição</h2>
+      <h2 id="titulo-descricao" class="section-title">Descrição</h2>
       <p>
-        <b>Ermis TTS</b> é um mecanismo de síntese de voz neural projetado para produção: suporta múltiplas vozes e idiomas, clonagem de voz (zero‑shot) a partir de poucos segundos de áudio e <i>style transfer</i> para emoções como <em>Impact</em>, <em>Sad</em> e variações de prosódia.
-        A pilha foi otimizada para baixa latência, alto paralelismo e fácil implantação em servidores ou notebooks, mantendo qualidade natural e alta similaridade com a voz alvo. As amostras abaixo ilustram organização por voz, por emoção e por modelo.
+        <b>Ermis TTS</b> é um mecanismo de síntese neural de voz pronto para produção. Oferece múltiplas vozes e idiomas, clonagem de voz <em>zero‑shot</em> a partir de poucos segundos de áudio, e transferência de estilo com controle de prosódia para emoções como <em>Impact</em> e <em>Sad</em>.
+        Foi projetado para baixa latência, alto paralelismo e implantação simples — em servidores ou notebooks — mantendo naturalidade e alta similaridade com a voz alvo. As amostras abaixo estão organizadas por voz, por emoção e por voz com texto.
       </p>
 
 
-      <h2>Amostras Ermis-TTS</h2>
+      <h2 id="titulo-amostras" class="section-title">Amostras Ermis-TTS</h2>
 
-      <p><em>Importante:</em> nas abas <b>Por emoção</b> e <b>Por voz com texto</b>, o termo <b>“emoção”</b> refere-se somente ao <u>conteúdo do texto</u> (legenda) exibido — frases que evocam raiva, tristeza, medo etc. O áudio continua sendo a mesma voz/modelo; <b>não</b> aplicamos controle prosódico/estilo adicional nessas abas. Quando houver amostras com estilo de síntese (por exemplo, <code>Impact</code> ou <code>Sad</code>), isso aparecerá explicitamente no nome da pasta/arquivo (<code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code>).</p>
+      <div class="info-card">
+        <h3>Como ler os datasets</h3>
+        <ul>
+          <li><b>Por voz</b>: amostras geradas pelos modelos Ermis em pastas por voz (Voz Feminina 01/02, Voz Masculina 01/02). Os grupos indicam o conteúdo textual (<em>Impact</em>, <em>Sad</em>, <em>Mid‑Long</em>).</li>
+          <li><b>Por emoção</b>: Dataset <b>EmoUERJ</b>. Cada bloco agrupa vozes por gênero e emoção, mostra um <b>Áudio de referência</b> (voz humana) quando disponível e uma grade de amostras geradas (Ermis) com o mesmo texto.</li>
+          <li><b>Áudio de referência</b>: guia de timbre e prosódia; não é a voz clonada no demo.</li>
+          <li><b>Arquivos</b>: nomes como <code>pt_impact_#.wav</code> e <code>pt_sad_#.wav</code> indicam o estilo aplicado (quando houver).</li>
+        </ul>
+      </div>
+
+      <p><em>Importante:</em> nas abas <b>Por emoção</b> e <b>Por voz com texto</b>, o termo <b>“emoção”</b> diz respeito apenas ao <u>conteúdo textual</u> — frases que evocam raiva, tristeza, medo etc. O áudio permanece da mesma voz/modelo; <b>não</b> aplicamos controle prosódico/estilo adicional nessas abas. Quando houver amostras com estilo de síntese (ex.: <code>Impact</code> ou <code>Sad</code>), isso estará explícito no nome da pasta/arquivo (<code>pt_impact_#.wav</code>, <code>pt_sad_#.wav</code>).</p>
 
 
       <div class="tabs" role="tablist" aria-label="Amostras organizadas">
@@ -316,59 +603,60 @@
 
   // Configuração dos datasets baseada na estrutura de pastas existente
   const DATASETS = {
-    Dublagem: {
-      base: 'audios_demo/emocao/dublagem',
-      genders: {
-        female: {
-          displayPrefix: 'feminino',
-          byEmotion: {
-            angry: [
-              { id: '50', groupId: 50, refFile: '9075656efc.wav', samples: ['angry_50-0.wav','angry_50-5.wav','angry_50-6.wav'] },
-              { id: '56', groupId: 56, refFile: '227e980cda.wav', samples: ['angry_56-2.wav','angry_56-3.wav','angry_56-8.wav'] }
-            ],
-            fear: [
-              { id: '27', groupId: 27, refFile: '93d53c3da4.wav', samples: ['fear_27-5.wav','fear_27-7.wav','fear_27-8.wav'] },
-              { id: '53', groupId: 53, refFile: 'd724b914b9.wav', samples: ['fear_53-5.wav','fear_53-7.wav','fear_53-8.wav'] }
-            ],
-            happy: [
-              { id: '38', groupId: 38, refFile: '7bb653bf39.wav', samples: ['happy_38-2.wav','happy_38-5.wav','happy_38-9.wav'] },
-              { id: '48', groupId: 48, refFile: '80cab7dda5.wav', samples: ['happy_48-5.wav','happy_48-6.wav','happy_48-8.wav'] },
-              { id: '49', groupId: 49, refFile: '49194a6615.wav', samples: ['happy_49-4.wav','happy_49-5.wav','happy_49-9.wav'] }
-            ],
-            sad: [
-              { id: '40', groupId: 40, refFile: 'f7342f70e4.wav', samples: ['sad_40-0.wav','sad_40-7.wav','sad_40-9.wav'] },
-              // { id: '43', groupId: 43, refFile: 'c287ad9214.wav', samples: ['sad_43-0.wav','sad_43-1.wav','sad_43-2.wav','sad_43-3.wav','sad_43-4.wav','sad_43-5.wav','sad_43-6.wav','sad_43-7.wav','sad_43-8.wav','sad_43-9.wav'] },
-              { id: '51', groupId: 51, refFile: 'f9fc95197b.wav', samples: ['sad_51-3.wav','sad_51-4.wav','sad_51-7.wav'] },
-              { id: '52', groupId: 52, refFile: '4296e717f5.wav', samples: ['sad_52-6.wav','sad_52-7.wav','sad_52-8.wav'] }
-            ],
-            surprise: [
-              { id: '26', groupId: 26, refFile: 'ffb08db167.wav', samples: ['surprise_26-4.wav','surprise_26-8.wav','surprise_26-9.wav'] },
-              { id: '36', groupId: 36, refFile: '592cd7c510.wav', samples: ['surprise_36-2.wav','surprise_36-7.wav','surprise_36-9.wav'] },
-              { id: '37', groupId: 37, refFile: 'c6e50e472f.wav', samples: ['surprise_37-2.wav','surprise_37-7.wav','surprise_37-9.wav'] }
-            ]
-          }
-        },
-        male: {
-          displayPrefix: 'masculino',
-          byEmotion: {
-            angry: [
-              { id: '0', groupId: 0, refFile: '2934e86276.wav', samples: ['angry_0-0.wav','angry_0-4.wav','angry_0-6.wav'] },
-              { id: '1', groupId: 1, refFile: '8bef5fe262.wav', samples: ['angry_1-1.wav','angry_1-2.wav','angry_1-3.wav'] },
-              { id: '3', groupId: 3, refFile: 'f86b21b285.wav', samples: ['angry_3-6.wav','angry_3-7.wav','angry_3-8.wav'] },
+    // Dublagem: {
+    //   base: 'audios_demo/emocao/dublagem',
+    //   genders: {
+    //     female: {
+    //       displayPrefix: 'feminino',
+    //       byEmotion: {
+    //         angry: [
+    //           { id: '50', groupId: 50, refFile: '9075656efc.wav', samples: ['angry_50-0.wav','angry_50-5.wav','angry_50-6.wav'] },
+    //           { id: '56', groupId: 56, refFile: '227e980cda.wav', samples: ['angry_56-2.wav','angry_56-3.wav','angry_56-8.wav'] }
+    //         ],
+    //         fear: [
+    //           { id: '27', groupId: 27, refFile: '93d53c3da4.wav', samples: ['fear_27-5.wav','fear_27-7.wav','fear_27-8.wav'] },
+    //           { id: '53', groupId: 53, refFile: 'd724b914b9.wav', samples: ['fear_53-5.wav','fear_53-7.wav','fear_53-8.wav'] }
+    //         ],
+    //         happy: [
+    //           { id: '38', groupId: 38, refFile: '7bb653bf39.wav', samples: ['happy_38-2.wav','happy_38-5.wav','happy_38-9.wav'] },
+    //           { id: '48', groupId: 48, refFile: '80cab7dda5.wav', samples: ['happy_48-5.wav','happy_48-6.wav','happy_48-8.wav'] },
+    //           { id: '49', groupId: 49, refFile: '49194a6615.wav', samples: ['happy_49-4.wav','happy_49-5.wav','happy_49-9.wav'] }
+    //         ],
+    //         sad: [
+    //           { id: '40', groupId: 40, refFile: 'f7342f70e4.wav', samples: ['sad_40-0.wav','sad_40-7.wav','sad_40-9.wav'] },
+    //           // { id: '43', groupId: 43, refFile: 'c287ad9214.wav', samples: ['sad_43-0.wav','sad_43-1.wav','sad_43-2.wav','sad_43-3.wav','sad_43-4.wav','sad_43-5.wav','sad_43-6.wav','sad_43-7.wav','sad_43-8.wav','sad_43-9.wav'] },
+    //           { id: '51', groupId: 51, refFile: 'f9fc95197b.wav', samples: ['sad_51-3.wav','sad_51-4.wav','sad_51-7.wav'] },
+    //           { id: '52', groupId: 52, refFile: '4296e717f5.wav', samples: ['sad_52-6.wav','sad_52-7.wav','sad_52-8.wav'] }
+    //         ],
+    //         surprise: [
+    //           { id: '26', groupId: 26, refFile: 'ffb08db167.wav', samples: ['surprise_26-4.wav','surprise_26-8.wav','surprise_26-9.wav'] },
+    //           { id: '36', groupId: 36, refFile: '592cd7c510.wav', samples: ['surprise_36-2.wav','surprise_36-7.wav','surprise_36-9.wav'] },
+    //           { id: '37', groupId: 37, refFile: 'c6e50e472f.wav', samples: ['surprise_37-2.wav','surprise_37-7.wav','surprise_37-9.wav'] }
+    //         ]
+    //       }
+    //     },
+    //     male: {
+    //       displayPrefix: 'masculino',
+    //       byEmotion: {
+    //         angry: [
+    //           { id: '0', groupId: 0, refFile: '2934e86276.wav', samples: ['angry_0-0.wav','angry_0-4.wav','angry_0-6.wav'] },
+    //           { id: '1', groupId: 1, refFile: '8bef5fe262.wav', samples: ['angry_1-1.wav','angry_1-2.wav','angry_1-3.wav'] },
+    //           { id: '3', groupId: 3, refFile: 'f86b21b285.wav', samples: ['angry_3-6.wav','angry_3-7.wav','angry_3-8.wav'] },
               
-            ],
-            fear: [
-              { id: '4', groupId: 4, refFile: '5f40613cc9.wav', samples: ['fear_4-1.wav','fear_4-5.wav','fear_4-9.wav'] },
-              { id: '15', groupId: 15, refFile: '3c0d3ba72c.wav', samples: ['fear_15-1.wav','fear_15-4.wav','fear_15-6.wav'] }
-            ],
-            happy: [
-              { id: '2', groupId: 2, refFile: null, samples: ['happy_2-4.wav','happy_2-8.wav','happy_2-9.wav'] },
-              { id: '16', groupId: 16, refFile: '515937ef07.wav', samples: ['happy_16-2.wav','happy_16-4.wav','happy_16-9.wav'] }
-            ]
-          }
-        }
-      }
-    },
+    //         ],
+    //         fear: [
+    //           { id: '4', groupId: 4, refFile: '5f40613cc9.wav', samples: ['fear_4-1.wav','fear_4-5.wav','fear_4-9.wav'] },
+    //           { id: '15', groupId: 15, refFile: '3c0d3ba72c.wav', samples: ['fear_15-1.wav','fear_15-4.wav','fear_15-6.wav'] }
+    //         ],
+    //         happy: [
+    //           { id: '2', groupId: 2, refFile: null, samples: ['happy_2-4.wav','happy_2-8.wav','happy_2-9.wav'] },
+    //           { id: '16', groupId: 16, refFile: '515937ef07.wav', samples: ['happy_16-2.wav','happy_16-4.wav','happy_16-9.wav'] }
+    //         ]
+    //       }
+    //     }
+    //   }
+    // },
+    
     EmoUERJ: {
       base: 'audios_demo/emocao/EmoUERJ',
       genders: {
@@ -479,6 +767,7 @@
         // Emoção como sub-bloco colapsável no mesmo estilo
         const emoDetails = document.createElement('details');
         emoDetails.className = 'model-voice';
+        emoDetails.classList.add(`emo-${em}`);
         emoDetails.setAttribute('open','');
         const emoSummary = document.createElement('summary');
         emoSummary.textContent = EMOTION_LABELS[em] || em;
@@ -497,6 +786,7 @@
             // Painel de voz no estilo do "Por modelo"
             const panel = document.createElement('div');
             panel.className = 'voice-panel';
+            panel.classList.add(`emo-${em}`);
 
             // Cabeçalho com chips de contexto
             const chips = document.createElement('div');
@@ -518,11 +808,12 @@
               const refAudio = document.createElement('audio');
               refAudio.controls = true;
               refAudio.preload = 'none';
-              if (dsName === 'Dublagem') {
-                refAudio.src = `${ds.base}/${gender}/${em}/${v.groupId}/referencia/${v.refFile}`;
-              } else if (dsName === 'EmoUERJ') {
+              if (dsName === 'EmoUERJ') {
                 refAudio.src = `${ds.base}/${em}/${gender}/${v.actor}/referencia/${v.refFile}`;
               }
+              // else if (dsName === 'Dublagem') {
+              //   refAudio.src = `${ds.base}/${gender}/${em}/${v.groupId}/referencia/${v.refFile}`;
+              // }
               const refLabel = document.createElement('span');
               refLabel.textContent = 'Áudio de referência';
               refContainer.appendChild(refAudio);
@@ -539,11 +830,13 @@
               const audio = document.createElement('audio');
               audio.controls = true;
               audio.preload = 'none';
-              if (dsName === 'Dublagem') {
-                audio.src = `${ds.base}/${gender}/${em}/${v.groupId}/${fn}`;
-              } else if (dsName === 'EmoUERJ') {
+              if (dsName === 'EmoUERJ') {
                 audio.src = `${ds.base}/${em}/${gender}/${v.actor}/${fn}`;
               }
+              // else if (dsName === 'Dublagem') {
+              //   audio.src = `${ds.base}/${gender}/${em}/${v.groupId}/${fn}`;
+              // } 
+              
               const label = document.createElement('span');
               label.className = 'filename';
               label.textContent = fn;
@@ -587,10 +880,10 @@
   .ref-audio {
     display:flex; align-items:center; gap:10px;
     margin: 6px 0 14px;
-    padding:10px; border:1px solid #e5e7eb; border-radius:10px; background:#ffffff;
-    font-weight:600; color:#0f172a;
+    padding:10px; border:1px solid var(--border); border-radius:10px; background: var(--surface);
+    font-weight:600; color: var(--text);
   }
-  .ref-audio audio { width: 320px; max-width: 100%; }
+  .ref-audio audio { width: 320px; max-width: 100%; border-radius: 8px; }
 </style>
 
 <script>
@@ -850,6 +1143,30 @@
   if (painelModelo.classList.contains('active')) ensureModelBuild();
 </script>
 
+    <script>
+      (function() {
+        const root = document.documentElement;
+        const btn = document.getElementById('theme-toggle');
+        function resolveInitialTheme() {
+          const saved = localStorage.getItem('theme');
+          if (saved === 'dark' || saved === 'light') return saved;
+          return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        function applyTheme(theme) {
+          root.setAttribute('data-theme', theme);
+          localStorage.setItem('theme', theme);
+          if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
+        }
+        const initial = resolveInitialTheme();
+        applyTheme(initial);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            const next = (root.getAttribute('data-theme') === 'dark') ? 'light' : 'dark';
+            applyTheme(next);
+          });
+        }
+      })();
+    </script>
     <script src="js/animheader.js"></script>
   </body>
 </html>
